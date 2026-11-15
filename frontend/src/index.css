@@ -1,0 +1,39 @@
+/* index.css – reset + variabel global */
+
+:root {
+  --color-primary:   #16a34a;   /* green-600 */
+  --color-primary-dark: #15803d;
+  --color-bg:        #f9fafb;
+  --color-surface:   #ffffff;
+  --color-border:    #e5e7eb;
+  --color-text:      #111827;
+  --color-muted:     #6b7280;
+  --radius:          0.5rem;
+  --shadow:          0 1px 3px 0 rgb(0 0 0 / 0.1);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font: inherit;
+}
+
+input, select, textarea {
+  font: inherit;
+}

@@ -1,0 +1,8 @@
+# Direktori ini menyimpan artefak model (pkl, csv).
+# File model dan data akan diupload terpisah.
+# Ekspektasi isi:
+#   kmeans_pangan_model.pkl
+#   cluster_wilayah.csv
+#   komoditas_wilayah.csv
+#   profil_klaster.csv
+#   standar_pph.csv
