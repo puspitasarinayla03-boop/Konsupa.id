@@ -1,26 +1,164 @@
-# Python
+
+# =============================================================================
+# .gitignore — konsupa.id (Full-Stack Python Flask & React Vite)
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# 1. Environment Variables & Credentials (JANGAN PERNAH DI-COMMIT)
+# -----------------------------------------------------------------------------
+.env
+.env.*
+*.env
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+backend/.env
+frontend/.env
+frontend/.env.local
+# Selalu pertahankan file template contoh
+!.env.example
+!backend/.env.example
+!frontend/.env.example
+
+# -----------------------------------------------------------------------------
+# 2. Python & Backend
+# -----------------------------------------------------------------------------
 __pycache__/
+**/__pycache__/
 *.py[cod]
+*$py.class
 *.pyo
+*.pyd
+
+# Virtual Environments
 .venv/
 venv/
-*.egg-info/
-.env
+env/
+ENV/
+env.bak/
+venv.bak/
 
-# Node
-node_modules/
+# Packaging & Distribution
+build/
+develop-eggs/
 dist/
-.vite/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Model & data (akan diupload manual)
+# Unit Testing & Coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# -----------------------------------------------------------------------------
+# 3. Node.js & Frontend (React / Vite)
+# -----------------------------------------------------------------------------
+node_modules/
+**/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Vite Build Output & Caches
+dist/
+frontend/dist/
+dist-ssr/
+*.local
+.vite/
+frontend/.vite/
+**/node_modules/.vite-temp/
+.vite-temp/
+**/dist/
+
+# Linter & Formatter Caches
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
+# -----------------------------------------------------------------------------
+# 4. Jupyter Notebooks & Data Science Checkpoints
+# -----------------------------------------------------------------------------
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+*-checkpoint.ipynb
+
+# -----------------------------------------------------------------------------
+# 5. Model & Artefak Data
+# -----------------------------------------------------------------------------
+# File model dan CSV hasil clustering
+# Catatan: Jika ingin men-track model & dataset final di repo (ukuran total ~300KB),
+# Anda dapat menghapus komentar tanda '!' di bawah ini:
 backend/artifacts/*.pkl
 backend/artifacts/*.csv
+!backend/artifacts/.gitkeep
+!backend/artifacts/model_metadata.json
 
-# OS
-.DS_Store
-Thumbs.db
+# Dataset mentah & cache lokal
+dataset awal/
+*.raw.csv
+*.sqlite3
 
-# IDE
+# -----------------------------------------------------------------------------
+# 6. IDE, Code Editor & Tooling
+# -----------------------------------------------------------------------------
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 .idea/
-.vscode/
+*.sublime-project
+*.sublime-workspace
 *.swp
+*.swo
+*~
+
+# -----------------------------------------------------------------------------
+# 7. Operating System Files
+# -----------------------------------------------------------------------------
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# -----------------------------------------------------------------------------
+# 8. Log & Temporary Files
+# -----------------------------------------------------------------------------
+*.log
+logs/
+temp/
+tmp/

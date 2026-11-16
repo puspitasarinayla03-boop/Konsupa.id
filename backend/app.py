@@ -76,18 +76,31 @@ def predict():
     """
     Body JSON:
     {
-      "input": { "fitur1": 0.5, "fitur2": 1.2, ... },
-      "exclude_wilayah": "Kab. Bogor",   // opsional
-      "top_n": 5                          // opsional, default 5
+      "input": { "padi-padian": 290, "umbi-umbian": 30, ... },
+      "exclude_wilayah": "Kab. Banyumas", // opsional
+      "top_n": 5                          // opsional, default 5 (1-50)
     }
     """
     body = request.get_json(silent=True)
-    if not body or "input" not in body:
-        return _err("Body harus berisi key 'input' dengan nilai dict fitur.")
+    if not body:
+        return _err("Request body harus berupa JSON yang valid.", 400)
 
-    input_values    = body["input"]
+    if "input" not in body or not isinstance(body["input"], dict):
+        return _err("Field 'input' wajib ada dan harus berupa dictionary pasangan nama fitur dan nilai konsumsi.", 400)
+
+    input_values = body["input"]
     exclude_wilayah = body.get("exclude_wilayah")
-    top_n           = int(body.get("top_n", 5))
+    if exclude_wilayah is not None:
+        exclude_wilayah = str(exclude_wilayah).strip()
+        if len(exclude_wilayah) > 100:
+            return _err("Panjang 'exclude_wilayah' maksimal 100 karakter.", 400)
+
+    try:
+        top_n = int(body.get("top_n", 5))
+        if top_n < 1 or top_n > 50:
+            return _err("Parameter 'top_n' harus bernilai antara 1 hingga 50.", 400)
+    except (ValueError, TypeError):
+        return _err("Parameter 'top_n' harus berupa bilangan bulat.", 400)
 
     try:
         prediction = ms.predict_cluster(input_values)
@@ -107,7 +120,7 @@ def predict():
     except FileNotFoundError as e:
         return _err(str(e), 503)
     except Exception as e:
-        return _err(str(e), 500)
+        return _err(f"Terjadi kesalahan server saat pemrosesan: {str(e)}", 500)
 
 
 # ---------------------------------------------------------------------------
@@ -125,10 +138,14 @@ def get_all_wilayah():
 
 @app.route("/api/wilayah/<string:nama>/komoditas", methods=["GET"])
 def get_komoditas(nama):
+    clean_nama = str(nama).strip()
+    if not clean_nama or len(clean_nama) > 120:
+        return _err("Nama wilayah tidak valid (harus 1-120 karakter).", 400)
+
     try:
-        data = ms.get_komoditas_detail(nama)
+        data = ms.get_komoditas_detail(clean_nama)
         if data is None:
-            return _err(f"Wilayah '{nama}' tidak ditemukan.", 404)
+            return _err(f"Rincian komoditas untuk wilayah '{clean_nama}' tidak ditemukan.", 404)
         return _ok(data)
     except FileNotFoundError as e:
         return _err(str(e), 503)
@@ -141,6 +158,9 @@ def get_komoditas(nama):
 # ---------------------------------------------------------------------------
 @app.route("/api/klaster/<int:cid>/profil", methods=["GET"])
 def get_profil(cid):
+    if cid not in [0, 1, 2, 3]:
+        return _err(f"ID klaster '{cid}' tidak valid. Nilai harus antara 0 hingga 3.", 400)
+
     try:
         return _ok(ms.get_profil_klaster(cid))
     except FileNotFoundError as e:
@@ -151,7 +171,19 @@ def get_profil(cid):
 
 @app.route("/api/klaster/<int:cid>/wilayah", methods=["GET"])
 def get_wilayah_klaster(cid):
-    top_n = request.args.get("top_n", default=None, type=int)
+    if cid not in [0, 1, 2, 3]:
+        return _err(f"ID klaster '{cid}' tidak valid. Nilai harus antara 0 hingga 3.", 400)
+
+    top_n_raw = request.args.get("top_n", default=None)
+    top_n = None
+    if top_n_raw is not None:
+        try:
+            top_n = int(top_n_raw)
+            if top_n < 1:
+                return _err("Parameter 'top_n' minimal bernilai 1.", 400)
+        except ValueError:
+            return _err("Parameter 'top_n' harus berupa integer.", 400)
+
     try:
         data = ms.get_similar_regions(cid, top_n=top_n or 9999)
         return _ok(data)
