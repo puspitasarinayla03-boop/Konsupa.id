@@ -162,7 +162,7 @@ def get_similar_regions(cluster_id: int, exclude_wilayah: str = None, top_n: int
 
 def get_komoditas_detail(wilayah_name: str) -> dict:
     """
-    Kembalikan data 26 komoditas untuk satu wilayah.
+    Kembalikan data rincian 26 komoditas pelengkap untuk satu wilayah.
 
     Parameters
     ----------

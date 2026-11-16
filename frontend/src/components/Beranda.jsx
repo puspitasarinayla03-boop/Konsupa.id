@@ -43,7 +43,8 @@ export default function Beranda({ onNavigate }) {
         </p>
         <p style={{ fontSize: "0.875rem", color: "var(--color-muted)", maxWidth: 640, margin: "0 auto" }}>
           Memahami dan membandingkan pola konsumsi pangan 514 kabupaten/kota di Indonesia
-          berdasarkan hasil klasterisasi K-Means terhadap 26 komoditas pangan.
+          berdasarkan hasil klasterisasi K-Means terhadap 8 kelompok pangan utama (standar PPH),
+          dilengkapi data rincian 26 komoditas pangan sebagai pelengkap.
         </p>
       </div>
 

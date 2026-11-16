@@ -23,7 +23,8 @@ export default function Metodologi() {
             <tbody>
               <tr><td style={{ color: "var(--color-muted)", width: 180 }}>Sumber</td><td>Susenas BPS 2024–2025 (atau sesuai sumber tim)</td></tr>
               <tr><td style={{ color: "var(--color-muted)" }}>Cakupan</td><td>514 kabupaten/kota di Indonesia</td></tr>
-              <tr><td style={{ color: "var(--color-muted)" }}>Fitur input</td><td>26 komoditas pangan (dikelompokkan ke 8 kelompok PPH)</td></tr>
+              <tr><td style={{ color: "var(--color-muted)" }}>Fitur klasterisasi (utama)</td><td><strong>8 kelompok pangan</strong> (sesuai standar Pola Pangan Harapan / PPH)</td></tr>
+              <tr><td style={{ color: "var(--color-muted)" }}>Data pelengkap (rincian)</td><td><strong>26 jenis komoditas spesifik</strong> per wilayah</td></tr>
               <tr><td style={{ color: "var(--color-muted)" }}>Satuan</td><td>Gram/kapita/hari (konversi dari kg/kapita/tahun ÷ 365)</td></tr>
               <tr><td style={{ color: "var(--color-muted)" }}>Pra-pemrosesan</td><td>StandardScaler (mean=0, std=1) per fitur</td></tr>
             </tbody>

@@ -1,7 +1,8 @@
 # konsupa.id — Sistem Informasi Pola Konsumsi Pangan
 
 Aplikasi web untuk analisis klasterisasi pola konsumsi pangan 514 wilayah Indonesia
-menggunakan K-Means clustering terhadap 26 komoditas pangan (8 kelompok PPH).
+menggunakan K-Means clustering terhadap **8 kelompok pangan utama (standar PPH)**,
+dilengkapi rincian **26 jenis komoditas** sebagai data pelengkap/penyusun.
 
 ---
 

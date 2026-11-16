@@ -11,7 +11,7 @@ Endpoint:
   GET  /api/cluster-names                 – peta cluster_id → nama klaster
   POST /api/predict                       – prediksi klaster + wilayah mirip
   GET  /api/wilayah                       – seluruh 514 wilayah + klaster
-  GET  /api/wilayah/<nama>/komoditas      – 26 komoditas satu wilayah
+  GET  /api/wilayah/<nama>/komoditas      – rincian 26 komoditas pelengkap satu wilayah
   GET  /api/klaster/<int:cid>/profil      – profil rata-rata klaster
   GET  /api/klaster/<int:cid>/wilayah     – daftar wilayah dalam klaster
   GET  /api/standar-pph                   – standar PPH per kelompok
