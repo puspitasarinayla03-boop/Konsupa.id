@@ -12,20 +12,16 @@ import { useState } from "react";
 import { Wheat, Map, Search, ScatterChart, Info, BookOpen } from "lucide-react";
 import "./App.css";
 
-import Beranda     from "./components/Beranda.jsx";
+import Beranda        from "./components/Beranda.jsx";
 import JelajahWilayah from "./components/JelajahWilayah.jsx";
-import CekTipePola from "./components/CekTipePola.jsx";
-import PetaKlaster from "./components/PetaKlaster.jsx";
-import Metodologi  from "./components/Metodologi.jsx";
-import StandarPPH  from "./components/StandarPPH.jsx";
+import PetaKlaster    from "./components/PetaKlaster.jsx";
+import CekTipePola    from "./components/CekTipePola.jsx";
 
 const PAGES = [
-  { id: "beranda",     label: "Beranda",        Icon: Wheat        },
-  { id: "jelajah",     label: "Jelajah Wilayah",Icon: Map          },
-  { id: "cek",         label: "Cek Tipe Pola",  Icon: Search       },
-  { id: "peta",        label: "Peta Klaster",   Icon: ScatterChart },
-  { id: "metodologi",  label: "Metodologi",     Icon: Info         },
-  { id: "pph",         label: "Standar PPH",    Icon: BookOpen     },
+  { id: "beranda", label: "Beranda",         Icon: Wheat        },
+  { id: "jelajah", label: "Jelajah Wilayah", Icon: Map          },
+  { id: "peta",    label: "Peta Klaster",    Icon: ScatterChart },
+  { id: "cek",     label: "Cek Tipe Pola",   Icon: Search       },
 ];
 
 export default function App() {
@@ -33,13 +29,11 @@ export default function App() {
 
   const renderPage = () => {
     switch (page) {
-      case "beranda":    return <Beranda        onNavigate={setPage} />;
-      case "jelajah":    return <JelajahWilayah />;
-      case "cek":        return <CekTipePola    />;
-      case "peta":       return <PetaKlaster    />;
-      case "metodologi": return <Metodologi     />;
-      case "pph":        return <StandarPPH     />;
-      default:           return <Beranda        onNavigate={setPage} />;
+      case "beranda": return <Beranda        onNavigate={setPage} />;
+      case "jelajah": return <JelajahWilayah />;
+      case "peta":    return <PetaKlaster    />;
+      case "cek":     return <CekTipePola    />;
+      default:        return <Beranda        onNavigate={setPage} />;
     }
   };
 

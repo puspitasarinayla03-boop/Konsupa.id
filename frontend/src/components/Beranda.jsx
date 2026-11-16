@@ -21,10 +21,9 @@ const DEFAULT_CLUSTER_NAMES = {
 };
 
 const QUICK_LINKS = [
-  { page: "jelajah",    Icon: Map,          label: "Jelajah Wilayah",   desc: "Profil, PPH, komoditas, wilayah mirip" },
-  { page: "cek",        Icon: Search,       label: "Cek Tipe Pola",     desc: "Input 8 kelompok → tipe pola instan"   },
-  { page: "peta",       Icon: ScatterChart, label: "Peta Klaster",      desc: "Scatter plot PCA seluruh wilayah"      },
-  { page: "metodologi", Icon: Info,         label: "Metodologi",        desc: "Metrik, keterbatasan, batas klaim"     },
+  { page: "jelajah", Icon: Map,          label: "Jelajah Wilayah", desc: "Profil 8 kelompok vs PPH, rincian 26 komoditas, dan wilayah mirip" },
+  { page: "peta",    Icon: ScatterChart, label: "Peta Klaster",    desc: "Grafik sebar 2 dimensi (PCA) sebaran seluruh wilayah per klaster" },
+  { page: "cek",     Icon: Search,       label: "Cek Tipe Pola",   desc: "Form input 8 kelompok pangan untuk penetapan klaster terdekat" },
 ];
 
 export default function Beranda({ onNavigate }) {
