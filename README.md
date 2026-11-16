@@ -1,14 +1,14 @@
-# SIPOKAN – Sistem Informasi Pangan dan Klasterisasi
+# konsupa.id — Sistem Informasi Pola Konsumsi Pangan
 
-Aplikasi web untuk analisis klasterisasi ketahanan pangan 514 wilayah Indonesia
-menggunakan K-Means clustering terhadap 26 komoditas pangan.
+Aplikasi web untuk analisis klasterisasi pola konsumsi pangan 514 wilayah Indonesia
+menggunakan K-Means clustering terhadap 26 komoditas pangan (8 kelompok PPH).
 
 ---
 
 ## Struktur Proyek
 
 ```
-SIPOKAN/
+konsupa.id/
 ├── backend/
 │   ├── app.py              # REST API Flask (routing & validasi)
 │   ├── model_service.py    # logika model: load, predict, cari wilayah mirip

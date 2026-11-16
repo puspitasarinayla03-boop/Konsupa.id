@@ -48,7 +48,7 @@ export default function App() {
       <nav className="navbar">
         <div className="navbar-brand">
           <Wheat size={22} />
-          SIPOKAN
+          konsupa.id
         </div>
         <div className="navbar-nav">
           {PAGES.map(({ id, label, Icon }) => (

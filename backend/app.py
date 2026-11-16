@@ -1,7 +1,7 @@
 """
 app.py
 ~~~~~~
-REST API Flask untuk SIPOKAN – Sistem Informasi Pangan dan Klasterisasi.
+REST API Flask untuk konsupa.id — Sistem Informasi Pola Konsumsi Pangan.
 Hanya mengandung routing, validasi input, dan penanganan error.
 Semua logika model ada di model_service.py.
 
@@ -42,7 +42,7 @@ def _err(message, status=400):
 # ---------------------------------------------------------------------------
 @app.route("/api/health", methods=["GET"])
 def health():
-    return _ok({"message": "SIPOKAN API berjalan", "version": "1.0.0"})
+    return _ok({"message": "konsupa.id API berjalan", "version": "1.0.0"})
 
 
 # ---------------------------------------------------------------------------

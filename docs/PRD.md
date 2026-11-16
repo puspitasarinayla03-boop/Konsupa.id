@@ -1,10 +1,10 @@
 # PRD — Product Requirements Document
 
-**Produk:** SIPOKAN (nama kerja) · **Versi dokumen:** 0.1 (draf)
+**Produk:** konsupa.id (Sistem Informasi Pola Konsumsi Pangan) · **Versi dokumen:** 0.1 (draf)
 
 ## 1. Ringkasan
 
-SIPOKAN membantu pengguna memahami pola konsumsi pangan 514 kabupaten/kota. Sistem menampilkan tipe pola hasil clustering, kesenjangan tiap wilayah terhadap standar PPH, wilayah yang mirip, dan menetapkan tipe pola untuk data konsumsi baru.
+konsupa.id membantu pengguna memahami pola konsumsi pangan 514 kabupaten/kota. Sistem menampilkan tipe pola hasil clustering, kesenjangan tiap wilayah terhadap standar PPH, wilayah yang mirip, dan menetapkan tipe pola untuk data konsumsi baru.
 
 ## 2. Latar belakang dan masalah
 

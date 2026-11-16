@@ -1,11 +1,11 @@
 # SRS — Software Requirements Specification
 
-**Produk:** SIPOKAN (nama kerja) · **Versi dokumen:** 0.1 (draf) · Acuan: `PRD.md`, `API_CONTRACT.md`, `DATA_DICTIONARY.md`
+**Produk:** konsupa.id (Sistem Informasi Pola Konsumsi Pangan) · **Versi dokumen:** 0.1 (draf) · Acuan: `PRD.md`, `API_CONTRACT.md`, `DATA_DICTIONARY.md`
 
 ## 1. Pendahuluan
 
 ### 1.1 Tujuan
-Dokumen ini menetapkan kebutuhan fungsional dan non-fungsional SIPOKAN: aplikasi web untuk menjelajahi dan membandingkan pola konsumsi pangan 514 kabupaten/kota berdasarkan hasil clustering K-Means.
+Dokumen ini menetapkan kebutuhan fungsional dan non-fungsional konsupa.id: aplikasi web untuk menjelajahi dan membandingkan pola konsumsi pangan 514 kabupaten/kota berdasarkan hasil clustering K-Means.
 
 ### 1.2 Lingkup
 Termasuk: API Flask, modul model, antarmuka React, artefak data hasil pelatihan. Tidak termasuk: peramalan, penilaian gizi atau kerawanan, peta geografis, autentikasi, penyimpanan masukan pengguna (lihat `PRD.md` bagian non-tujuan).
@@ -81,7 +81,7 @@ Kunci kelompok pangan pada API memakai `snake_case`: `padi_padian`, `umbi_umbian
 
 - **API:** REST JSON, awalan `/api`, amplop respons seragam (`status`, `data`, `catatan`); kontrak lengkap di `API_CONTRACT.md`.
 - **Antarmuka pengguna:** lima halaman (Beranda, Jelajah Wilayah, Peta Klaster, Cek Tipe Pola, Metodologi). Rancangan tampilan visual menyusul; konsep halaman ada di `DESIGN.md`.
-- **Berkas:** artefak dibaca dari folder `artifacts/` (diatur lewat `SIPOKAN_ARTIFACT_DIR`).
+- **Berkas:** artefak dibaca dari folder `artifacts/` (diatur lewat `KONSUPA_ARTIFACT_DIR`).
 
 ## 7. Kriteria penerimaan
 

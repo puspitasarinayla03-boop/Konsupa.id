@@ -1,6 +1,4 @@
-# SIPOKAN — Sistem Informasi Pola Konsumsi Pangan
-
-> Nama kerja. Nama final belum diputuskan (lihat `docs/DECISIONS.md`, bagian keputusan terbuka).
+# konsupa.id — Sistem Informasi Pola Konsumsi Pangan
 
 Aplikasi web untuk **memahami dan membandingkan pola konsumsi pangan 514 kabupaten/kota di Indonesia**. Sistem mengelompokkan wilayah ke 4 tipe pola konsumsi (K-Means), menjelaskan tiap wilayah terhadap standar Pola Pangan Harapan (PPH), mencari wilayah yang mirip, dan menetapkan tipe pola untuk data konsumsi baru yang dimasukkan pengguna.
 

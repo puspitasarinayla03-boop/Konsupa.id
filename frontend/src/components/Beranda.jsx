@@ -1,5 +1,5 @@
 /**
- * Beranda.jsx – Landing page SIPOKAN (sesuai PRD)
+ * Beranda.jsx – Landing page konsupa.id (sesuai PRD)
  * Ringkasan 4 tipe pola + batas klaim + navigasi cepat.
  */
 import { useState, useEffect } from "react";
@@ -36,7 +36,7 @@ export default function Beranda({ onNavigate }) {
       {/* Hero */}
       <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
         <h1 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: "0.75rem" }}>
-          SIPOKAN
+          konsupa.id
         </h1>
         <p style={{ fontSize: "1.05rem", color: "var(--color-muted)", maxWidth: 580, margin: "0 auto 0.5rem" }}>
           Sistem Informasi Pola Konsumsi Pangan
