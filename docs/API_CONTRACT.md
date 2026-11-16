@@ -105,70 +105,70 @@ Mengembalikan ringkasan profil makro untuk 4 tipe pola konsumsi (Screen Beranda)
     "tipe": [
       {
         "id_tipe": 0,
-        "nama": "Pangan Pokok Tradisional & Sayur Tinggi",
-        "jumlah_wilayah": 182,
-        "persentase_wilayah": 35.4,
-        "ciri_utama": "Konsumsi padi-padian dan sayur/buah di atas rata-rata nasional, hewani sedang.",
+        "nama": "Pola Pangan Umbi Tradisional",
+        "jumlah_wilayah": 9,
+        "persentase_wilayah": 1.5,
+        "ciri_utama": "Konsumsi umbi-umbian sangat ekstrem dominan (812,07 g/hari), sayur dan buah tinggi (309,70 g/hari), padi-padian dan hewani terendah.",
         "profil_rata_rata": {
-          "padi_padian": 310.2,
-          "umbi_umbian": 45.1,
-          "pangan_hewani": 110.5,
-          "minyak_lemak": 26.3,
-          "buah_biji_berminyak": 8.1,
-          "kacang_kacangan": 28.4,
-          "gula": 24.2,
-          "sayur_buah": 265.0
+          "padi_padian": 120.03,
+          "umbi_umbian": 812.07,
+          "pangan_hewani": 58.18,
+          "minyak_lemak": 23.16,
+          "buah_biji_berminyak": 0.06,
+          "kacang_kacangan": 6.66,
+          "gula": 15.39,
+          "sayur_buah": 309.70
         }
       },
       {
         "id_tipe": 1,
-        "nama": "Konsumsi Hewani & Minyak Tinggi Perkotaan",
-        "jumlah_wilayah": 140,
-        "persentase_wilayah": 27.2,
-        "ciri_utama": "Konsumsi hewani dan minyak/lemak tinggi, padi-padian moderat.",
+        "nama": "Pola Pangan Nabati & Serat Tinggi",
+        "jumlah_wilayah": 194,
+        "persentase_wilayah": 31.5,
+        "ciri_utama": "Konsumsi kacang-kacangan tertinggi (31,71 g/hari), sayur dan buah tinggi (279,16 g/hari), konsumsi padi-padian tinggi.",
         "profil_rata_rata": {
-          "padi_padian": 250.0,
-          "umbi_umbian": 20.3,
-          "pangan_hewani": 195.4,
-          "minyak_lemak": 38.6,
-          "buah_biji_berminyak": 9.4,
-          "kacang_kacangan": 36.2,
-          "gula": 35.1,
-          "sayur_buah": 210.5
+          "padi_padian": 293.95,
+          "umbi_umbian": 46.48,
+          "pangan_hewani": 118.45,
+          "minyak_lemak": 28.83,
+          "buah_biji_berminyak": 3.14,
+          "kacang_kacangan": 31.71,
+          "gula": 20.88,
+          "sayur_buah": 279.16
         }
       },
       {
         "id_tipe": 2,
-        "nama": "Dominan Karbohidrat & Pangan Olahan",
-        "jumlah_wilayah": 120,
-        "persentase_wilayah": 23.3,
-        "ciri_utama": "Sangat tinggi beras/terigu, asupan hewani dan kacang-kacangan rendah.",
+        "nama": "Pola Pangan Beras-Sentris",
+        "jumlah_wilayah": 175,
+        "persentase_wilayah": 28.5,
+        "ciri_utama": "Konsumsi padi-padian tertinggi (320,84 g/hari), buah/biji berminyak tertinggi (6,27 g/hari), asupan sayur dan umbi paling rendah.",
         "profil_rata_rata": {
-          "padi_padian": 345.8,
-          "umbi_umbian": 15.0,
-          "pangan_hewani": 85.2,
-          "minyak_lemak": 30.1,
-          "buah_biji_berminyak": 5.2,
-          "kacang_kacangan": 18.0,
-          "gula": 28.0,
-          "sayur_buah": 160.4
+          "padi_padian": 320.84,
+          "umbi_umbian": 34.91,
+          "pangan_hewani": 121.65,
+          "minyak_lemak": 23.17,
+          "buah_biji_berminyak": 6.27,
+          "kacang_kacangan": 14.72,
+          "gula": 19.05,
+          "sayur_buah": 214.61
         }
       },
       {
         "id_tipe": 3,
-        "nama": "Pola Umbi-Umbian & Pangan Lokal Kepulauan",
-        "jumlah_wilayah": 72,
-        "persentase_wilayah": 14.0,
-        "ciri_utama": "Konsumsi umbi-umbian dan ikan laut sangat tinggi, padi-padian lebih rendah.",
+        "nama": "Pola Pangan Hewani & Lemak Tinggi",
+        "jumlah_wilayah": 237,
+        "persentase_wilayah": 38.5,
+        "ciri_utama": "Konsumsi pangan hewani tertinggi (156,93 g/hari melampaui PPH), minyak & lemak tertinggi (30,46 g/hari), gula tertinggi (24,55 g/hari).",
         "profil_rata_rata": {
-          "padi_padian": 190.5,
-          "umbi_umbian": 160.2,
-          "pangan_hewani": 165.0,
-          "minyak_lemak": 18.5,
-          "buah_biji_berminyak": 12.0,
-          "kacang_kacangan": 14.5,
-          "gula": 18.0,
-          "sayur_buah": 185.0
+          "padi_padian": 271.88,
+          "umbi_umbian": 50.31,
+          "pangan_hewani": 156.93,
+          "minyak_lemak": 30.46,
+          "buah_biji_berminyak": 3.42,
+          "kacang_kacangan": 18.34,
+          "gula": 24.55,
+          "sayur_buah": 237.93
         }
       }
     ]
@@ -229,7 +229,7 @@ Mencari dan menyaring daftar 514 wilayah dengan filter dan paginasi.
         "nama_wilayah": "Kabupaten Bogor",
         "provinsi": "Jawa Barat",
         "id_tipe": 0,
-        "nama_tipe": "Pangan Pokok Tradisional & Sayur Tinggi",
+        "nama_tipe": "Pola Pangan Umbi Tradisional",
         "status_perbatasan": false,
         "margin_relatif": 0.28
       }
@@ -261,7 +261,7 @@ Menampilkan detail lengkap satu wilayah: tipe, 8 kelompok vs PPH, median nasiona
     },
     "klaster": {
       "id_tipe_2025": 0,
-      "nama_tipe_2025": "Pangan Pokok Tradisional & Sayur Tinggi",
+      "nama_tipe_2025": "Pola Pangan Umbi Tradisional",
       "id_tipe_2024": 0,
       "konsistensi_antartahun": true,
       "jarak_ke_centroid": 1.42,
@@ -430,7 +430,7 @@ Menetapkan klaster terdekat untuk vektor konsumsi baru yang diinputkan pengguna.
   "data": {
     "hasil_penetapan": {
       "id_tipe": 0,
-      "nama_tipe": "Pangan Pokok Tradisional & Sayur Tinggi",
+      "nama_tipe": "Pola Pangan Umbi Tradisional",
       "jarak_ke_centroid_terpilih": 0.85,
       "tingkat_keyakinan": "tegas",
       "status_perbatasan": false,

@@ -61,6 +61,14 @@ def _ensure_loaded():
 #   }
 # ---------------------------------------------------------------------------
 
+DEFAULT_CLUSTER_NAMES = {
+    0: "Pola Pangan Umbi Tradisional",
+    1: "Pola Pangan Nabati & Serat Tinggi",
+    2: "Pola Pangan Beras-Sentris",
+    3: "Pola Pangan Hewani & Lemak Tinggi",
+}
+
+
 def get_features() -> list:
     """Kembalikan daftar fitur yang dipakai model."""
     _ensure_loaded()
@@ -69,8 +77,11 @@ def get_features() -> list:
 
 def get_cluster_names() -> dict:
     """Kembalikan peta {cluster_id: nama_klaster}."""
-    _ensure_loaded()
-    return _model_bundle["cluster_names"]
+    try:
+        _ensure_loaded()
+        return _model_bundle.get("cluster_names", DEFAULT_CLUSTER_NAMES)
+    except FileNotFoundError:
+        return DEFAULT_CLUSTER_NAMES
 
 
 def predict_cluster(input_values: dict) -> dict:

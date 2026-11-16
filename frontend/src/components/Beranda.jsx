@@ -13,6 +13,13 @@ const CLUSTER_COLORS = [
   { bg: "#fce7f3", text: "#9d174d", border: "#f9a8d4" },
 ];
 
+const DEFAULT_CLUSTER_NAMES = {
+  0: "Pola Pangan Umbi Tradisional",
+  1: "Pola Pangan Nabati & Serat Tinggi",
+  2: "Pola Pangan Beras-Sentris",
+  3: "Pola Pangan Hewani & Lemak Tinggi",
+};
+
 const QUICK_LINKS = [
   { page: "jelajah",    Icon: Map,          label: "Jelajah Wilayah",   desc: "Profil, PPH, komoditas, wilayah mirip" },
   { page: "cek",        Icon: Search,       label: "Cek Tipe Pola",     desc: "Input 8 kelompok → tipe pola instan"   },
@@ -75,7 +82,7 @@ export default function Beranda({ onNavigate }) {
         >
           {[0, 1, 2, 3].map((cid) => {
             const c = CLUSTER_COLORS[cid];
-            const name = clusterNames[cid] || `Klaster ${cid}`;
+            const name = clusterNames[cid] || DEFAULT_CLUSTER_NAMES[cid] || `Klaster ${cid}`;
             return (
               <div
                 key={cid}
