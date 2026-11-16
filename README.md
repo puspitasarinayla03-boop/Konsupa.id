@@ -26,9 +26,9 @@ konsupa.id/
     │   ├── api.js
     │   ├── components/
     │   │   ├── Beranda.jsx
-    │   │   ├── Prediksi.jsx
-    │   │   ├── Eksplorasi.jsx
-    │   │   └── StandarPPH.jsx
+    │   │   ├── JelajahWilayah.jsx
+    │   │   ├── PetaKlaster.jsx
+    │   │   └── CekTipePola.jsx
     │   ├── App.css / index.css
     │   └── main.jsx
     ├── index.html
@@ -131,11 +131,11 @@ POST /api/predict
 
 ---
 
-## Halaman Frontend
+## 4 Layar Utama (Frontend)
 
-| Halaman | Deskripsi |
-|---------|-----------|
-| **Beranda** | Landing page dengan ringkasan fitur |
-| **Prediksi** | Form input data pangan → prediksi klaster + wilayah mirip |
-| **Eksplorasi** | Tabel 514 wilayah dengan filter klaster & search |
-| **Standar PPH** | Tabel referensi standar Pola Pangan Harapan |
+| Halaman | Komponen | Deskripsi |
+|---|---|---|
+| **Beranda** | `Beranda.jsx` | Ringkasan makro 4 tipe pola konsumsi pangan, karakteristik centroid, dan catatan batas klaim. |
+| **Jelajah Wilayah** | `JelajahWilayah.jsx` | Eksplorasi profil wilayah: perbandingan 8 kelompok pangan vs standar PPH, rincian 26 komoditas, dan 5 wilayah paling mirip. |
+| **Peta Klaster** | `PetaKlaster.jsx` | Visualisasi grafik sebar 2 dimensi (reduksi dimensi PCA) sebaran 514 wilayah berwarna per tipe klaster. |
+| **Cek Tipe Pola** | `CekTipePola.jsx` | Form interaktif input 8 kelompok pangan untuk penetapan tipe klaster terdekat (*cluster assignment*), tingkat keyakinan, dan deteksi zona perbatasan. |
