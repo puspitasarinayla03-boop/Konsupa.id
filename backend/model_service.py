@@ -184,8 +184,10 @@ def predict_cluster(input_values: dict) -> dict:
     cluster_id = int(kmeans.predict(X_scaled)[0])
     cluster_name = cluster_names.get(cluster_id, f"Klaster {cluster_id}")
 
-    # 5. Hitung jarak ke setiap centroid & margin keyakinan
-    centroids = kmeans.cluster_centers_
+    # 5. Hitung jarak ke setiap pusat klaster (K-Means cluster_centers_ atau GMM means_) & margin keyakinan
+    centroids = getattr(kmeans, "cluster_centers_", getattr(kmeans, "means_", None))
+    if centroids is None:
+        raise AttributeError("Model klaster tidak memiliki atribut 'cluster_centers_' maupun 'means_'.")
     distances = {
         int(i): round(float(np.linalg.norm(X_scaled - centroids[i])), 2)
         for i in range(len(centroids))

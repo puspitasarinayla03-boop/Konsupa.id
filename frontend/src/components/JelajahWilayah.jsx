@@ -158,45 +158,47 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
   // Update selected region jika initialRegion berubah dari halaman lain
   useEffect(() => {
     if (initialRegion) {
-      setSelectedKabupaten(initialRegion);
-      const match = wilayahList.find(
-        (w) => (w.Kabupaten_Kota || w.wilayah || "").toLowerCase().includes(initialRegion.toLowerCase())
-      );
-      if (match?.Provinsi) setSelectedProvinsi(match.Provinsi);
+      const q = initialRegion.toLowerCase();
+      const match =
+        wilayahList.find((w) => (w.Kabupaten_Kota || w.wilayah || "").toLowerCase() === q) ||
+        wilayahList.find((w) => (w.Kabupaten_Kota || w.wilayah || "").toLowerCase().startsWith(q)) ||
+        wilayahList.find((w) => (w.Kabupaten_Kota || w.wilayah || "").toLowerCase().includes(q));
+      if (match) {
+        setSelectedKode(match.Kode_Wilayah);
+        setSelectedKabupaten(match.Kabupaten_Kota || match.wilayah);
+        if (match.Provinsi) setSelectedProvinsi(match.Provinsi);
+      } else {
+        setSelectedKode(null);
+        setSelectedKabupaten(initialRegion);
+      }
     }
   }, [initialRegion, wilayahList]);
 
-  // Active Territory Record (100% exact match prioritizing Kode_Wilayah)
+  // Active Territory Record (prioritaskan Kode_Wilayah unik, lalu exact match)
   const activeWilayah = useMemo(() => {
     if (!wilayahList.length) return preloadedWilayah[0];
 
-    // 1. Priority 1: Match by unique Kode_Wilayah
     if (selectedKode != null) {
       const byKode = wilayahList.find((w) => Number(w.Kode_Wilayah) === Number(selectedKode));
       if (byKode) return byKode;
     }
 
-    // 2. Priority 2: Exact name AND exact province
-    if (selectedKabupaten && selectedProvinsi) {
+    const q = (selectedKabupaten || "").toLowerCase();
+    if (q && selectedProvinsi) {
       const exactBoth = wilayahList.find(
         (w) =>
-          (w.Kabupaten_Kota || w.wilayah || "").toLowerCase() === selectedKabupaten.toLowerCase() &&
+          (w.Kabupaten_Kota || w.wilayah || "").toLowerCase() === q &&
           w.Provinsi === selectedProvinsi
       );
       if (exactBoth) return exactBoth;
     }
 
-    // 3. Priority 3: Exact name match
-    if (selectedKabupaten) {
+    if (q) {
       const exactName = wilayahList.find(
-        (w) => (w.Kabupaten_Kota || w.wilayah || "").toLowerCase() === selectedKabupaten.toLowerCase()
+        (w) => (w.Kabupaten_Kota || w.wilayah || "").toLowerCase() === q
       );
       if (exactName) return exactName;
-    }
 
-    // 4. Priority 4: Substring match (preferring startsWith)
-    if (selectedKabupaten) {
-      const q = selectedKabupaten.toLowerCase();
       const startsWith = wilayahList.find((w) =>
         (w.Kabupaten_Kota || w.wilayah || "").toLowerCase().startsWith(q)
       );
@@ -240,14 +242,32 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
     return Array.from(new Set(wilayahList.map((w) => w.Provinsi).filter(Boolean))).sort();
   }, [wilayahList]);
 
-  // Filtered Kabupaten untuk Autocomplete
+  // Filtered Kabupaten untuk Autocomplete (pencarian lintas provinsi saat mengetik)
   const filteredKabupatenList = useMemo(() => {
-    return wilayahList.filter((w) => {
-      const matchProv = !selectedProvinsi || w.Provinsi === selectedProvinsi;
-      const name = w.Kabupaten_Kota || w.wilayah || "";
-      const matchQuery = !searchQuery || name.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchProv && matchQuery;
-    });
+    const q = searchQuery.trim().toLowerCase();
+    return wilayahList
+      .filter((w) => {
+        const name = (w.Kabupaten_Kota || w.wilayah || "").toLowerCase();
+        const prov = (w.Provinsi || "").toLowerCase();
+        if (q) {
+          return name.includes(q) || prov.includes(q);
+        }
+        return !selectedProvinsi || w.Provinsi === selectedProvinsi;
+      })
+      .sort((a, b) => {
+        const aName = (a.Kabupaten_Kota || "").toLowerCase();
+        const bName = (b.Kabupaten_Kota || "").toLowerCase();
+        if (!q) return aName.localeCompare(bName);
+        const aStripped = aName.replace(/^(kabupaten|kota)\s+/i, "");
+        const bStripped = bName.replace(/^(kabupaten|kota)\s+/i, "");
+        if (aStripped === q && bStripped !== q) return -1;
+        if (bStripped === q && aStripped !== q) return 1;
+        const aStarts = aStripped.startsWith(q) || aName.startsWith(q);
+        const bStarts = bStripped.startsWith(q) || bName.startsWith(q);
+        if (aStarts && !bStarts) return -1;
+        if (!aStarts && bStarts) return 1;
+        return aName.localeCompare(bName);
+      });
   }, [wilayahList, selectedProvinsi, searchQuery]);
 
   // ---------------------------------------------------------------------------
@@ -410,15 +430,26 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
   };
 
   return (
-    <div style={{ padding: "24px 24px 40px", display: "flex", flexDirection: "column", gap: 16 }}>
-      {/* =========================================================================
-          TOP CONTROL BAR & BREADCRUMBS
-      ========================================================================= */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+    <div style={{ padding: "8px 24px 40px", display: "flex", flexDirection: "column", gap: 16 }}>
+      {/* Divider & Section Header Jelajah Wilayah */}
+      <div
+        style={{
+          borderTop: "1px solid #DDE7E0",
+          paddingTop: 20,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: 12,
+        }}
+      >
         {/* Breadcrumb Interaktif */}
         <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12 }}>
-          <span style={{ color: "#4B6354", cursor: "pointer", fontWeight: 600 }} onClick={() => onNavigate("beranda")}>
-            Nasional
+          <span
+            style={{ color: "#4B6354", cursor: "pointer", fontWeight: 600 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
+            Nasional (Peta PCA)
           </span>
           <ChevronRight size={13} color="#9DB2A5" />
           <span

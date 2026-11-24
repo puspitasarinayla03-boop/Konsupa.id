@@ -1,14 +1,16 @@
 /* index.css – Sistem Desain Claymorphism konsupa.id */
 
 :root {
-  --color-primary:      #1B4D36;   /* Deep Forest Clay */
-  --color-primary-dark: #113824;
-  --color-accent:       #2A885F;
-  --color-bg:           #F5F5F5;   /* Soft matte organic clay canvas */
+  --color-primary:      #134E18;   /* Bapanas Deep Forest Green */
+  --color-primary-dark: #0D3A11;
+  --color-accent:       #167D26;   /* Bapanas Leaf Green */
+  --color-gold:         #E5B324;   /* Bapanas Golden Paddy Yellow */
+  --color-gold-soft:    #FEF8E6;
+  --color-bg:           #F6F7F5;   /* Clean off-white canvas */
   --color-surface:      #FFFFFF;
-  --color-border:       #D6E6DC;
-  --color-text:         #133123;
-  --color-muted:        #506C5B;
+  --color-border:       #E3E8E2;
+  --color-text:         #13311A;
+  --color-muted:        #506352;
   --radius-card:        22px;
   --radius-pill:        9999px;
 

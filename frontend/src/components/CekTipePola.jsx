@@ -270,20 +270,16 @@ export default function CekTipePola({ onNavigate }) {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div
+          <img
+            src="/maskot.png"
+            alt="Si Supa - Maskot konsupa.id"
             style={{
-              width: 36,
-              height: 36,
-              borderRadius: 8,
-              background: "#E8F5EE",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#1C553D",
+              width: 44,
+              height: 44,
+              objectFit: "contain",
+              flexShrink: 0,
             }}
-          >
-            <Calculator size={18} />
-          </div>
+          />
           <div>
             <h1 style={{ fontSize: 18, fontWeight: 800, color: "#143224", margin: 0 }}>
               Cek Tipe Pola Konsumsi
@@ -552,17 +548,22 @@ export default function CekTipePola({ onNavigate }) {
                   : (validation.hasErrors ? "Perbaiki kesalahan input sebelum simulasi" : "Jalankan Simulasi Klaster")
               }
               style={{
-                background: validation.canSubmit ? "#064E3B" : "#94A3B8",
+                background: validation.canSubmit
+                  ? "linear-gradient(135deg, #167D26 0%, #134E18 100%)"
+                  : "#94A3B8",
                 color: "#FFFFFF",
                 border: "none",
-                borderRadius: 8,
-                padding: "8px 16px",
+                borderRadius: 9999,
+                padding: "9px 20px",
                 fontSize: 12,
                 fontWeight: 700,
                 display: "flex",
                 alignItems: "center",
                 gap: 6,
                 cursor: validation.canSubmit ? "pointer" : "not-allowed",
+                boxShadow: validation.canSubmit
+                  ? "4px 6px 14px rgba(19, 78, 24, 0.22), inset 1px 1px 2px rgba(255, 255, 255, 0.25)"
+                  : "none",
                 transition: "all 0.15s",
               }}
             >
@@ -677,14 +678,14 @@ export default function CekTipePola({ onNavigate }) {
             </div>
           )}
 
-          {/* Main Result Card (Dark Forest Green Background) */}
+          {/* Main Result Card (Bapanas Deep Forest Green + Gold Accent) */}
           <div
             style={{
-              background: "#143828",
-              borderRadius: 14,
-              padding: "18px 20px",
+              background: "linear-gradient(135deg, #166520 0%, #134E18 100%)",
+              borderRadius: 20,
+              padding: "20px 22px",
               color: "#FFFFFF",
-              boxShadow: "0px 4px 16px rgba(15, 45, 30, 0.15)",
+              boxShadow: "7px 12px 24px rgba(19, 78, 24, 0.18), inset 1.5px 1.5px 3px rgba(255, 255, 255, 0.22), inset -1.5px -1.5px 3px rgba(0, 0, 0, 0.2)",
             }}
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -692,19 +693,19 @@ export default function CekTipePola({ onNavigate }) {
                 <span
                   style={{
                     fontSize: 10,
-                    fontWeight: 700,
-                    background: "rgba(255, 255, 255, 0.15)",
-                    padding: "2px 8px",
-                    borderRadius: 4,
-                    color: "#A7F3D0",
+                    fontWeight: 800,
+                    background: "#E5B324",
+                    padding: "3px 10px",
+                    borderRadius: 9999,
+                    color: "#134E18",
                   }}
                 >
                   Hasil Model
                 </span>
-                <h2 style={{ fontSize: 18, fontWeight: 800, margin: "6px 0 2px 0", color: "#FFFFFF" }}>
+                <h2 style={{ fontSize: 18, fontWeight: 800, margin: "8px 0 2px 0", color: "#FFFFFF" }}>
                   {currentResult.title}
                 </h2>
-                <div style={{ fontSize: 11, color: "#D1FAE5", opacity: 0.9 }}>
+                <div style={{ fontSize: 11, color: "#EAF5EC", opacity: 0.92 }}>
                   {currentResult.sub}
                 </div>
               </div>
@@ -713,9 +714,9 @@ export default function CekTipePola({ onNavigate }) {
               <div
                 style={{
                   background: "rgba(255, 255, 255, 0.12)",
-                  border: "1px solid rgba(167, 243, 208, 0.3)",
-                  borderRadius: 8,
-                  padding: "4px 8px",
+                  border: "1px solid rgba(229, 179, 36, 0.45)",
+                  borderRadius: 12,
+                  padding: "5px 10px",
                   textAlign: "right",
                 }}
               >

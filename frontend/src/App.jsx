@@ -3,52 +3,64 @@
  * Layout terintegrasi dengan Header & Footer sesuai spesifikasi Figma
  */
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./App.css";
 
-import Beranda from "./components/Beranda.jsx";
 import JelajahWilayah from "./components/JelajahWilayah.jsx";
 import PetaKlaster from "./components/PetaKlaster.jsx";
 import CekTipePola from "./components/CekTipePola.jsx";
 
 const PAGES = [
-  { id: "beranda", label: "Beranda" },
-  { id: "jelajah", label: "Jelajah Wilayah" },
-  { id: "peta", label: "Peta Klaster" },
+  { id: "peta", label: "Sebaran & Jelajah Wilayah" },
   { id: "cek", label: "Cek Tipe Pola" },
 ];
 
 export default function App() {
-  const [page, setPage] = useState("beranda");
+  const [page, setPage] = useState("peta");
   const [selectedRegion, setSelectedRegion] = useState("Kabupaten Banyumas");
+  const jelajahRef = useRef(null);
 
   const handleNavigate = (targetPage, region = null) => {
     if (region) setSelectedRegion(region);
     setPage(targetPage);
+    if (targetPage === "peta" && region) {
+      setTimeout(() => {
+        jelajahRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 60);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
+  const handleSelectRegionFromMap = (region) => {
+    setSelectedRegion(region);
+    jelajahRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const renderPage = () => {
     switch (page) {
-      case "beranda":
-        return <Beranda onNavigate={handleNavigate} />;
-      case "jelajah":
-        return (
-          <JelajahWilayah
-            initialRegion={selectedRegion}
-            onNavigate={handleNavigate}
-          />
-        );
-      case "peta":
-        return (
-          <PetaKlaster
-            onSelectRegion={(reg) => handleNavigate("jelajah", reg)}
-            onNavigate={handleNavigate}
-          />
-        );
       case "cek":
         return <CekTipePola onNavigate={handleNavigate} />;
+      case "peta":
       default:
-        return <Beranda onNavigate={handleNavigate} />;
+        return (
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <PetaKlaster
+              onSelectRegion={handleSelectRegionFromMap}
+              onNavigate={handleNavigate}
+            />
+            <div
+              ref={jelajahRef}
+              id="jelajah-wilayah-section"
+              style={{ scrollMarginTop: 72 }}
+            >
+              <JelajahWilayah
+                initialRegion={selectedRegion}
+                onNavigate={handleNavigate}
+              />
+            </div>
+          </div>
+        );
     }
   };
 
@@ -60,9 +72,12 @@ export default function App() {
           {/* Brand Logo & Title */}
           <div 
             className="header-brand-group" 
-            onClick={() => setPage("beranda")}
+            onClick={() => {
+              setPage("peta");
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
             style={{ cursor: "pointer" }}
-            title="konsupa.id — Beranda"
+            title="konsupa.id — Sebaran & Jelajah Wilayah"
           >
             <div 
               style={{

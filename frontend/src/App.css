@@ -1,13 +1,13 @@
 /* App.css – layout utama dan sistem tema Claymorphism konsupa.id */
 
-/* ---- Top Header ---- */
+/* ---- Top Header (Gaya Bapanas: Hijau Tua & Kuning Padi Emas) ---- */
 .header-wrapper {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: #143828;
-  border-bottom: 1px solid #1E4D37;
-  box-shadow: 0px 4px 20px rgba(15, 45, 30, 0.15);
+  background: #134E18;
+  border-bottom: 3px solid #E5B324;
+  box-shadow: 0px 4px 20px rgba(13, 58, 17, 0.16);
 }
 
 .header-container {
@@ -48,16 +48,16 @@
   color: #FFFFFF;
 }
 
-/* Nav Pills */
+/* Nav Pills (Bapanas Claymorphism) */
 .nav-pill-container {
-  background: rgba(16, 42, 30, 0.7);
-  border: 1px solid rgba(45, 106, 79, 0.4);
+  background: rgba(10, 42, 13, 0.55);
+  border: 1px solid rgba(229, 179, 36, 0.25);
   border-radius: 9999px;
   padding: 4px;
   display: flex;
   align-items: center;
-  gap: 3px;
-  box-shadow: inset 1px 2px 4px rgba(0, 0, 0, 0.2);
+  gap: 4px;
+  box-shadow: inset 1px 2px 5px rgba(0, 0, 0, 0.25);
 }
 
 .nav-pill-btn {
@@ -65,7 +65,7 @@
   border-radius: 9999px;
   font-size: 13px;
   font-weight: 500;
-  color: #D8F3DC;
+  color: #E8F3EA;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -77,16 +77,16 @@
 
 .nav-pill-btn:hover {
   color: #FFFFFF;
-  background: rgba(45, 106, 79, 0.4);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .nav-pill-btn.active {
-  background: linear-gradient(135deg, #2D6A4F 0%, #1B4D36 100%);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, #F0C23A 0%, #DFA718 100%);
+  color: #134E18;
   font-weight: 700;
   box-shadow: 
-    0px 2px 6px rgba(0, 0, 0, 0.2),
-    inset 1px 1px 2px rgba(255, 255, 255, 0.3);
+    0px 2px 8px rgba(0, 0, 0, 0.22),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.65);
 }
 
 /* Header Right */
@@ -97,8 +97,8 @@
 }
 
 .header-status-badge {
-  background: rgba(22, 60, 42, 0.85);
-  border: 1px solid rgba(82, 183, 136, 0.4);
+  background: rgba(13, 58, 17, 0.85);
+  border: 1px solid rgba(229, 179, 36, 0.4);
   border-radius: 9999px;
   padding: 4px 14px;
   display: flex;
@@ -111,9 +111,9 @@
 .header-pulse-dot {
   width: 7px;
   height: 7px;
-  background: #52B788;
+  background: #E5B324;
   border-radius: 9999px;
-  box-shadow: 0 0 6px #52B788;
+  box-shadow: 0 0 6px #E5B324;
 }
 
 .header-icon-btn {
@@ -155,7 +155,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #F5F5F5;
+  background: #F6F7F5;
 }
 
 .app-content {
@@ -165,11 +165,11 @@
 
 /* ---- Footer ---- */
 .footer-wrapper {
-  background: #F0F0F0;
-  border-top: 1px solid #D2E2D8;
+  background: #F0F2EF;
+  border-top: 2px solid #E5B324;
   padding: 16px 0;
   font-size: 12px;
-  color: #4C6656;
+  color: #4A5E4D;
 }
 
 .footer-container {

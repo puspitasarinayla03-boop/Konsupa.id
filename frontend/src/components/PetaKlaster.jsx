@@ -201,7 +201,7 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
   const zeroY = toSvgY(0);
 
   return (
-    <div style={{   padding: "24px 24px 40px", display: "flex", flexDirection: "column", gap: 16 }}>
+    <div style={{   padding: "24px 24px 16px", display: "flex", flexDirection: "column", gap: 16 }}>
       {/* =========================================================================
           TOP HEADER & CONTROLS
       ========================================================================= */}
@@ -680,38 +680,50 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
             </div>
           </div>
 
-          {/* Card 3: Prediksi & Klasifikasi Tipe Pola Banner */}
+          {/* Card 3: Prediksi & Klasifikasi Tipe Pola Banner (Gaya Bapanas) */}
           <div
             style={{
-              background: "#D1FAE5",
-              border: "1px solid #A7F3D0",
-              borderRadius: 14,
-              padding: "14px 18px",
+              background: "#FEF8E6",
+              border: "none",
+              borderRadius: 20,
+              padding: "16px 18px",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.03)",
+              gap: 10,
+              boxShadow: "6px 10px 22px rgba(20, 52, 35, 0.05), -3px -3px 10px rgba(255, 255, 255, 0.95), inset 1.5px 1.5px 3px rgba(255, 255, 255, 0.9), inset -1.5px -1.5px 3px rgba(180, 130, 15, 0.06)",
             }}
           >
-            <div>
-              <div style={{ fontSize: 12, fontWeight: 700, color: "#064E3B" }}>
-                Prediksi &amp; Klasifikasi Tipe Pola
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <img
+                src="/maskot.png"
+                alt="Si Supa"
+                style={{ width: 38, height: 38, objectFit: "contain", flexShrink: 0 }}
+              />
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 800, color: "#134E18" }}>
+                  Prediksi &amp; Klasifikasi Tipe Pola
+                </div>
+                <div style={{ fontSize: 10, color: "#506352" }}>
+                  Uji simulasi pola konsumsi pangan mandiri
+                </div>
               </div>
             </div>
             <button
               onClick={() => onNavigate("cek")}
               style={{
-                background: "#064E3B",
+                background: "linear-gradient(135deg, #167D26 0%, #134E18 100%)",
                 color: "#FFFFFF",
                 border: "none",
-                borderRadius: 8,
-                padding: "6px 12px",
+                borderRadius: 9999,
+                padding: "8px 14px",
                 fontSize: 11,
                 fontWeight: 700,
                 display: "flex",
                 alignItems: "center",
                 gap: 5,
                 cursor: "pointer",
+                boxShadow: "3px 5px 10px rgba(19, 78, 24, 0.2), inset 1px 1px 2px rgba(255, 255, 255, 0.25)",
               }}
             >
               <span>Cek Wilayah</span>
