@@ -14,16 +14,24 @@ import {
   MapPin,
   CheckCircle2,
 } from "lucide-react";
-import { getAllWilayah, getClusterNames } from "../api.js";
+import { getAllWilayah } from "../api.js";
 import preloadedWilayah from "../data/data_wilayah.json";
+import { CLUSTER_CONFIG, CLUSTER_PROFILES } from "../clusterConfig.js";
 
 function sanitizeWilayah(raw) {
+  const rows = Array.isArray(raw) ? raw : [];
+  const hasTahun = rows.some((item) => item.Tahun != null);
+  const filtered = hasTahun
+    ? rows.filter((item) => item.Tahun == null || Number(item.Tahun) === 2025)
+    : rows;
+
   const unique = [];
   const seen = new Set();
-  for (const item of (raw || [])) {
-    const name = item.Kabupaten_Kota || item.wilayah || item.nama;
-    if (name && !seen.has(name)) {
-      seen.add(name);
+  for (const item of filtered) {
+    const key = item.Kode_Wilayah ?? item.Kabupaten_Kota ?? item.wilayah ?? item.nama;
+    const name = item.Kabupaten_Kota || item.wilayah || item.nama || `Wilayah ${item.Kode_Wilayah}`;
+    if (key != null && !seen.has(String(key))) {
+      seen.add(String(key));
       let pc1 = Number(item.pc1);
       let pc2 = Number(item.pc2);
       if (isNaN(pc1) || isNaN(pc2)) {
@@ -32,101 +40,36 @@ function sanitizeWilayah(raw) {
         pc1 = Math.cos(angle) * r;
         pc2 = Math.sin(angle) * r;
       }
-      const sil = Number(item.silhouette) || 0.17;
-      const isBorder = sil < 0.10 || (unique.length % 11 === 0);
+      const rawProb = item.Prob_Max ?? item.prob_max;
+      const probMax = rawProb != null && !isNaN(Number(rawProb)) ? Number(rawProb) : 1.0;
+      const isTransition = probMax < 0.7;
+      const clusterId = Number(item.Cluster ?? item.cluster ?? 0) % 4;
+      const composition = [0, 1, 2, 3]
+        .map((cid) => ({
+          id: cid,
+          pct: Number(item[`prob_${cid}`] ?? (cid === clusterId ? probMax * 100 : 0)),
+        }))
+        .filter((c) => c.pct >= 1)
+        .sort((a, b) => b.pct - a.pct);
+
       unique.push({
         ...item,
         name,
         Kabupaten_Kota: name,
         pc1,
         pc2,
-        cluster: Number(item.cluster) % 4,
-        silhouette: sil,
-        isBorder,
-        margin: isBorder ? ((unique.length % 9) * 0.01 + 0.02).toFixed(2) : "0.24",
+        cluster: clusterId,
+        Cluster: clusterId,
+        probMax,
+        Prob_Max: probMax,
+        isTransition,
+        isBorder: isTransition,
+        composition,
       });
     }
   }
   return unique;
 }
-
-const CLUSTER_CONFIG = {
-  0: {
-    label: "Tipe 0: Pola Pangan Umbi Tradisional",
-    short: "Umbi Tradisional",
-    name: "Pola Pangan Umbi Tradisional",
-    color: "#16A34A",
-    count: 8,
-    pct: "1.6%",
-    bg: "#DCFCE7",
-  },
-  1: {
-    label: "Tipe 1: Pola Pangan Nabati & Serat Tinggi",
-    short: "Nabati & Serat Tinggi",
-    name: "Pola Pangan Nabati & Serat Tinggi",
-    color: "#2563EB",
-    count: 175,
-    pct: "34.0%",
-    bg: "#EFF6FF",
-  },
-  2: {
-    label: "Tipe 2: Pola Pangan Beras-Sentris",
-    short: "Beras-Sentris",
-    name: "Pola Pangan Beras-Sentris",
-    color: "#D97706",
-    count: 169,
-    pct: "32.9%",
-    bg: "#FFFBEB",
-  },
-  3: {
-    label: "Tipe 3: Pola Pangan Hewani & Lemak Tinggi",
-    short: "Hewani & Lemak Tinggi",
-    name: "Pola Pangan Hewani & Lemak Tinggi",
-    color: "#DC2626",
-    count: 162,
-    pct: "31.5%",
-    bg: "#FFF1F2",
-  },
-};
-
-const CLUSTER_PROFILES = [
-  {
-    id: 0,
-    name: "Pola Pangan Umbi Tradisional",
-    tag: "Tipe 0",
-    color: "#16A34A",
-    bg: "#DCFCE7",
-    textColor: "#14532D",
-    desc: "Konsumsi dominan umbi-umbian lokal (singkong, ubi jalar, sagu) dengan asupan beras rendah. Karakteristik pangan tradisional kepulauan timur.",
-  },
-  {
-    id: 1,
-    name: "Pola Pangan Nabati & Serat Tinggi",
-    tag: "Tipe 1",
-    color: "#2563EB",
-    bg: "#EFF6FF",
-    textColor: "#1E40AF",
-    desc: "Asupan sayur, buah, dan kacang-kacangan tinggi dengan keragaman nabati kaya dan skor mutu PPH optimal.",
-  },
-  {
-    id: 2,
-    name: "Pola Pangan Beras-Sentris",
-    tag: "Tipe 2",
-    color: "#D97706",
-    bg: "#FEF3C7",
-    textColor: "#92400E",
-    desc: "Sangat bertumpu pada beras/padi-padian sebagai sumber energi dominan, mencerminkan pola konsumsi rata-rata nasional.",
-  },
-  {
-    id: 3,
-    name: "Pola Pangan Hewani & Lemak Tinggi",
-    tag: "Tipe 3",
-    color: "#DC2626",
-    bg: "#FFF1F2",
-    textColor: "#991B1B",
-    desc: "Asupan tinggi protein hewani (daging, ikan, telur, susu) serta minyak dan lemak olahan; tipikal daerah perkotaan maju.",
-  },
-];
 
 export default function PetaKlaster({ onSelectRegion, onNavigate }) {
   const [wilayahList, setWilayahList] = useState(() => sanitizeWilayah(preloadedWilayah));
@@ -160,6 +103,20 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
       new Set(wilayahList.map((w) => w.Provinsi).filter(Boolean))
     ).sort();
     return list;
+  }, [wilayahList]);
+
+  // Dynamic cluster counts & percentages for Tahun 2025
+  const clusterStats = useMemo(() => {
+    const total = wilayahList.length || 1;
+    const stats = {};
+    [0, 1, 2, 3].forEach((id) => {
+      const count = wilayahList.filter((w) => Number(w.cluster) === id).length;
+      stats[id] = {
+        count,
+        pct: ((count / total) * 100).toFixed(1) + "%",
+      };
+    });
+    return stats;
   }, [wilayahList]);
 
   // Filtered points
@@ -223,7 +180,7 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <h1 style={{ fontSize: 18, fontWeight: 800, color: "#143224", margin: 0 }}>
-              Sebaran Pola Konsumsi (PCA 2D)
+              Peta Sebaran Pola Konsumsi Pangan
             </h1>
             <span
               style={{
@@ -239,7 +196,7 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
             </span>
           </div>
           <p style={{ fontSize: 11, color: "#546E60", margin: "4px 0 0 0" }}>
-            Proyeksi 2 dimensi reduksi fitur 8 kelompok pengeluaran pangan BPS • PC1: 42.8% • PC2: 24.1% (Total Keragaman Σ: 66.9%)
+            Pemetaan 514 kabupaten/kota berdasarkan kemiripan 8 kelompok konsumsi pangan Susenas 2025.
           </p>
         </div>
 
@@ -263,11 +220,12 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
               cursor: "pointer",
             }}
           >
-            <option value="all">Semua Tipe Pola (514 Wilayah)</option>
-            <option value="0">Tipe 0: Pola Pangan Umbi Tradisional (8 Wilayah)</option>
-            <option value="1">Tipe 1: Pola Pangan Nabati & Serat Tinggi (175 Wilayah)</option>
-            <option value="2">Tipe 2: Pola Pangan Beras-Sentris (169 Wilayah)</option>
-            <option value="3">Tipe 3: Pola Pangan Hewani & Lemak Tinggi (162 Wilayah)</option>
+            <option value="all">Semua Tipe Pola ({wilayahList.length} Wilayah)</option>
+            {Object.entries(CLUSTER_CONFIG).map(([id, cfg]) => (
+              <option key={id} value={id}>
+                {cfg.label} ({clusterStats[id]?.count ?? 0} Wilayah)
+              </option>
+            ))}
           </select>
 
           {/* Filter Provinsi */}
@@ -296,7 +254,7 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
             ))}
           </select>
 
-          {/* Checkbox Sorot Perbatasan */}
+          {/* Checkbox Sorot Pola Campuran */}
           <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, fontWeight: 600, color: "#143224", cursor: "pointer" }}>
             <input
               type="checkbox"
@@ -304,7 +262,7 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
               onChange={(e) => setHighlightBorder(e.target.checked)}
               style={{ accentColor: "#16A34A", cursor: "pointer" }}
             />
-            Sorot Perbatasan (&lt;0.10)
+            Sorot Pola Campuran
           </label>
 
           {/* Button Pusatkan */}
@@ -477,11 +435,11 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
               </div>
             )}
 
-            {/* Y-Axis Label (Rotated on the Left) */}
+              {/* Y-Axis Label (Rotated on the Left) */}
             <div
               style={{
                 position: "absolute",
-                left: -60,
+                left: -46,
                 top: "50%",
                 transform: "translateY(-50%) rotate(-90deg)",
                 fontSize: 10,
@@ -493,7 +451,7 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
                 border: "none",
               }}
             >
-              ↕ PC2 (24.1%): Umbi vs Makanan Jadi
+              ↕ Variasi Pangan Pelengkap
             </div>
 
             {/* X-Axis Label (Bottom Center) */}
@@ -513,7 +471,7 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
                 boxShadow: "0px 1px 3px rgba(0,0,0,0.04)",
               }}
             >
-              ↔ PC1 (42.8%): Keragaman Nabati/Hewani vs Padi-padian
+              ↔ Variasi Pangan Pokok &amp; Keragaman
             </div>
 
             {/* Interactive Tooltip Card */}
@@ -522,7 +480,7 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
                 style={{
                   position: "absolute",
                   left: Math.min(svgWidth - 210, Math.max(10, toSvgX(hoveredPoint.pc1) - 90)),
-                  top: Math.max(10, toSvgY(hoveredPoint.pc2) - 60),
+                  top: Math.max(10, toSvgY(hoveredPoint.pc2) - 65),
                   background: "#FFFFFF",
                   border: "1px solid #CFE3D6",
                   borderRadius: 8,
@@ -537,11 +495,25 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
                   {hoveredPoint.name}
                 </div>
                 <div style={{ color: "#546E60", fontSize: 10 }}>
-                  Tipe {hoveredPoint.cluster} • PC1: {hoveredPoint.pc1.toFixed(2)} | PC2: {hoveredPoint.pc2.toFixed(2)}
+                  Tipe {hoveredPoint.cluster} • {CLUSTER_CONFIG[hoveredPoint.cluster]?.short}
                 </div>
-                {hoveredPoint.isBorder && (
-                  <div style={{ color: "#065F46", fontWeight: 600, fontSize: 10, marginTop: 2 }}>
-                    Titik Perbatasan Tipe 1 (Margin: {hoveredPoint.margin})
+                {hoveredPoint.composition?.length > 0 && (
+                  <div style={{ color: "#1C553D", fontSize: 10, fontWeight: 600, marginTop: 2 }}>
+                    Komposisi:{" "}
+                    {hoveredPoint.composition
+                      .slice(0, 3)
+                      .map((c) => `${c.pct.toFixed(0)}% Tipe ${c.id}`)
+                      .join(" • ")}
+                  </div>
+                )}
+                {hoveredPoint.Provinsi && (
+                  <div style={{ color: "#6A8374", fontSize: 10 }}>
+                    Provinsi {hoveredPoint.Provinsi}
+                  </div>
+                )}
+                {hoveredPoint.isTransition && (
+                  <div style={{ color: "#B45309", fontWeight: 700, fontSize: 10, marginTop: 2 }}>
+                    Wilayah Pola Konsumsi Campuran
                   </div>
                 )}
               </div>
@@ -567,7 +539,7 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
               <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <Layers size={16} color="#006C48" />
                 <h3 style={{ fontSize: 13, fontWeight: 800, color: "#143224", margin: 0, letterSpacing: 0.3 }}>
-                  DISTRIBUSI 4 TIPE KLASTER
+                  DISTRIBUSI 4 TIPE POLA PANGAN
                 </h3>
               </div>
               <span
@@ -606,7 +578,7 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
                     </span>
                   </div>
                   <div style={{ fontSize: 10, color: "#546E60", marginTop: 4 }}>
-                    {cfg.count} Wilayah ({cfg.pct})
+                    {clusterStats[id]?.count ?? 0} Wilayah ({clusterStats[id]?.pct ?? "0%"})
                   </div>
                 </div>
               ))}
@@ -627,7 +599,7 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
               <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
                 <Layers size={16} color="#143224" />
                 <h3 style={{ fontSize: 13, fontWeight: 800, color: "#143224", margin: 0, letterSpacing: 0.3 }}>
-                  PROFIL KARAKTERISTIK KLASTER
+                  PROFIL KARAKTERISTIK POLA PANGAN
                 </h3>
               </div>
               <span style={{ fontSize: 10, color: "#546E60", fontWeight: 500 }}>

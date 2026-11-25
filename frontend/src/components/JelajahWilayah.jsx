@@ -35,6 +35,7 @@ import {
 import { getAllWilayah, getKomoditasWilayah } from "../api.js";
 import preloadedWilayah from "../data/data_wilayah.json";
 import preloadedKomoditas from "../data/data_komoditas.json";
+import { CLUSTER_CONFIG } from "../clusterConfig.js";
 
 // -----------------------------------------------------------------------------
 // KONFIGURASI STANDAR POLA PANGAN HARAPAN (BAPANAS / WNPG)
@@ -83,28 +84,7 @@ const KOMODITAS_META = {
   buah: { label: "Buah-buahan", group: "sayur dan buah", category: "Sayur & Buah", color: "#BE123C", bg: "#FFE4E6" },
 };
 
-const CLUSTER_METADATA = {
-  0: {
-    nama: "Pola Pangan Umbi Tradisional",
-    sub: "Pola Konsumsi Umbi & Pangan Tradisional",
-    keyakinan: "Tegas (0.28)",
-  },
-  1: {
-    nama: "Pola Pangan Nabati & Serat Tinggi",
-    sub: "Dominansi Pangan Nabati, Sayur & Buah",
-    keyakinan: "Tegas (0.31)",
-  },
-  2: {
-    nama: "Pola Pangan Beras-Sentris",
-    sub: "Dominasi Serealia Padi & Sesuai Rata-rata Nasional",
-    keyakinan: "Sedang (0.19)",
-  },
-  3: {
-    nama: "Pola Pangan Hewani & Lemak Tinggi",
-    sub: "Asupan Tinggi Protein Hewani, Daging & Olahan",
-    keyakinan: "Sangat Tinggi (0.42)",
-  },
-};
+// Konfigurasi klaster GMM diimpor dari ../clusterConfig.js
 
 export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", onNavigate }) {
   // ---------------------------------------------------------------------------
@@ -137,13 +117,20 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
       .then((res) => {
         const raw = res?.data || res || [];
         if (Array.isArray(raw) && raw.length > 0) {
+          const hasTahun = raw.some((item) => item.Tahun != null);
+          const filtered = hasTahun
+            ? raw.filter((item) => item.Tahun == null || Number(item.Tahun) === 2025)
+            : raw;
           const unique = [];
           const seen = new Set();
-          for (const item of raw) {
-            const name = item.Kabupaten_Kota || item.wilayah || item.nama;
-            if (name && !seen.has(name)) {
-              seen.add(name);
-              unique.push(item);
+          for (const item of filtered) {
+            const key = item.Kode_Wilayah ?? item.Kabupaten_Kota ?? item.wilayah ?? item.nama;
+            if (key != null && !seen.has(String(key))) {
+              seen.add(String(key));
+              unique.push({
+                ...item,
+                cluster: Number(item.Cluster ?? item.cluster ?? 0) % 4,
+              });
             }
           }
           if (unique.length > 0) setWilayahList(unique);
@@ -414,8 +401,19 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
       .slice(0, 5);
   }, [wilayahList, activeWilayah]);
 
-  const clusterId = Number(activeWilayah?.cluster ?? 0) % 4;
-  const clusterMeta = CLUSTER_METADATA[clusterId] || CLUSTER_METADATA[0];
+  const clusterId = Number(activeWilayah?.Cluster ?? activeWilayah?.cluster ?? 0) % 4;
+  const clusterMeta = CLUSTER_CONFIG[clusterId] || CLUSTER_CONFIG[0];
+  const probMax = Number(activeWilayah?.Prob_Max ?? activeWilayah?.prob_max ?? 1);
+  const isTransition = probMax < 0.7;
+  const keyakinanLabel =
+    probMax >= 0.9 ? "Sangat Tinggi" : probMax >= 0.75 ? "Tinggi" : probMax >= 0.7 ? "Sedang" : "Campuran";
+  const regionComposition = [0, 1, 2, 3]
+    .map((cid) => ({
+      id: cid,
+      pct: Number(activeWilayah?.[`prob_${cid}`] ?? (cid === clusterId ? probMax * 100 : 0)),
+      cfg: CLUSTER_CONFIG[cid],
+    }))
+    .sort((a, b) => b.pct - a.pct);
 
   // Handler Pilih Wilayah
   const handleSelectWilayah = (w) => {
@@ -703,19 +701,19 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
               {/* Cluster badge */}
               <span
                 style={{
-                  background: "#ECFDF5",
-                  border: "1px solid #A7F3D0",
+                  background: clusterMeta.bg,
+                  border: `1px solid ${clusterMeta.color}44`,
                   borderRadius: 9999,
                   padding: "3px 10px",
                   fontSize: 11,
                   fontWeight: 700,
-                  color: "#064E3B",
+                  color: clusterMeta.textColor,
                   display: "flex",
                   alignItems: "center",
                   gap: 5,
                 }}
               >
-                <span style={{ width: 6, height: 6, background: "#DC2626", borderRadius: 9999 }} />
+                <span style={{ width: 6, height: 6, background: clusterMeta.color, borderRadius: 9999 }} />
                 Tipe {clusterId}
               </span>
             </div>
@@ -724,7 +722,7 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
               {/* Tile 1 */}
               <div style={{ background: "rgba(255, 255, 255, 0.85)", border: "1px solid rgba(6, 78, 59, 0.1)", borderRadius: 8, padding: "8px 10px" }}>
-                <div style={{ fontSize: 10, color: "#546E60", fontWeight: 500 }}>Klaster</div>
+                <div style={{ fontSize: 10, color: "#546E60", fontWeight: 500 }}>Kelompok Pola</div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#065F46", marginTop: 2 }}>
                   Tipe {clusterId}
                 </div>
@@ -732,18 +730,62 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
 
               {/* Tile 2 */}
               <div style={{ background: "rgba(255, 255, 255, 0.85)", border: "1px solid rgba(6, 78, 59, 0.1)", borderRadius: 8, padding: "8px 10px" }}>
-                <div style={{ fontSize: 10, color: "#546E60", fontWeight: 500 }}>Keyakinan</div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#0F5238", marginTop: 2 }}>
-                  {clusterMeta.keyakinan}
+                <div style={{ fontSize: 10, color: "#546E60", fontWeight: 500 }}>Kesesuaian Pola</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: isTransition ? "#B45309" : "#0F5238", marginTop: 2 }}>
+                  {keyakinanLabel}
                 </div>
               </div>
 
               {/* Tile 3 */}
               <div style={{ background: "rgba(255, 255, 255, 0.85)", border: "1px solid rgba(6, 78, 59, 0.1)", borderRadius: 8, padding: "8px 10px" }}>
-                <div style={{ fontSize: 10, color: "#546E60", fontWeight: 500 }}>Silhouette</div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#191C1C", marginTop: 2 }}>
-                  {activeWilayah.silhouette ? Number(activeWilayah.silhouette).toFixed(2) : "0.21"}
+                <div style={{ fontSize: 10, color: "#546E60", fontWeight: 500 }}>Karakteristik</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: isTransition ? "#B45309" : "#191C1C", marginTop: 2 }}>
+                  {isTransition ? "Pola Campuran" : "Pola Tunggal"}
                 </div>
+              </div>
+            </div>
+
+            {/* Komposisi Kecenderungan 4 Tipe Pola Pangan */}
+            <div
+              style={{
+                marginTop: 10,
+                background: "rgba(255, 255, 255, 0.88)",
+                border: "1px solid rgba(6, 78, 59, 0.1)",
+                borderRadius: 10,
+                padding: "10px 12px",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                <span style={{ fontSize: 10.5, fontWeight: 700, color: "#143224" }}>
+                  Komposisi Kecenderungan Pola Pangan Wilayah
+                </span>
+                <span style={{ fontSize: 10, color: "#546E60" }}>Total 100%</span>
+              </div>
+              <div style={{ display: "flex", height: 8, borderRadius: 9999, overflow: "hidden", background: "#E5E7EB", gap: 1 }}>
+                {regionComposition
+                  .filter((item) => item.pct > 0.5)
+                  .map((item) => (
+                    <div
+                      key={item.id}
+                      title={`Tipe ${item.id} (${item.cfg.short}): ${item.pct.toFixed(1)}%`}
+                      style={{
+                        width: `${item.pct}%`,
+                        height: "100%",
+                        background: item.cfg.color,
+                      }}
+                    />
+                  ))}
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 12px", marginTop: 7 }}>
+                {regionComposition
+                  .filter((item) => item.pct >= 1)
+                  .map((item) => (
+                    <div key={item.id} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 10.5 }}>
+                      <span style={{ width: 7, height: 7, borderRadius: 9999, background: item.cfg.color }} />
+                      <span style={{ fontWeight: 700, color: "#143224" }}>{item.pct.toFixed(1)}%</span>
+                      <span style={{ color: "#546E60" }}>Tipe {item.id} ({item.cfg.short})</span>
+                    </div>
+                  ))}
               </div>
             </div>
           </div>
@@ -776,7 +818,7 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
                   padding: "2px 6px",
                 }}
               >
-                Jarak Euclidean
+                Tingkat Kemiripan Profil
               </span>
             </div>
 

@@ -4,6 +4,7 @@
  */
 
 import { useState, useRef } from "react";
+import { Map, SlidersHorizontal } from "lucide-react";
 import "./App.css";
 
 import JelajahWilayah from "./components/JelajahWilayah.jsx";
@@ -11,8 +12,8 @@ import PetaKlaster from "./components/PetaKlaster.jsx";
 import CekTipePola from "./components/CekTipePola.jsx";
 
 const PAGES = [
-  { id: "peta", label: "Sebaran & Jelajah Wilayah" },
-  { id: "cek", label: "Cek Tipe Pola" },
+  { id: "peta", label: "Sebaran & Jelajah Wilayah", shortTag: "Peta 514 Daerah", icon: Map },
+  { id: "cek", label: "Cek Tipe Pola", shortTag: "Simulasi 8 Pangan", icon: SlidersHorizontal },
 ];
 
 export default function App() {
@@ -79,45 +80,38 @@ export default function App() {
             style={{ cursor: "pointer" }}
             title="konsupa.id — Sebaran & Jelajah Wilayah"
           >
-            <div 
-              style={{
-                height: 34,
-                padding: "2px 8px",
-                background: "#FFFFFF",
-                borderRadius: 9,
-                display: "flex",
-                alignItems: "center",
-                boxShadow: "0 2px 6px rgba(0,0,0,0.18)",
-              }}
-            >
-              <img 
-                src="/logo.png" 
-                alt="Logo konsupa.id" 
-                style={{ height: 26, width: "auto", objectFit: "contain", display: "block" }} 
-              />
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="Logo konsupa.id" 
+              style={{ height: 32, width: "auto", objectFit: "contain", display: "block" }} 
+            />
             <span className="header-brand-title">konsupa.id</span>
           </div>
 
-          {/* Navigation Pills */}
+          {/* Expandable Navigation Pills */}
           <nav className="nav-pill-container">
-            {PAGES.map(({ id, label }) => (
-              <button
-                key={id}
-                className={`nav-pill-btn${page === id ? " active" : ""}`}
-                onClick={() => setPage(id)}
-              >
-                <span>{label}</span>
-              </button>
-            ))}
+            {PAGES.map(({ id, label, shortTag, icon: Icon }) => {
+              const isActive = page === id;
+              return (
+                <button
+                  key={id}
+                  className={`nav-pill-btn${isActive ? " active" : ""}`}
+                  onClick={() => setPage(id)}
+                >
+                  <Icon size={14} className="nav-pill-icon" />
+                  <span>{label}</span>
+                  <span className="nav-pill-expand">{shortTag}</span>
+                </button>
+              );
+            })}
           </nav>
 
           {/* Right Controls */}
           <div className="header-meta-group">
             <div className="header-status-badge">
               <span className="header-pulse-dot" />
-              <strong style={{ color: "#FFFFFF" }}>514</strong>
-              <span style={{ color: "#B6F0D3" }}>Kab/Kota</span>
+              <strong style={{ color: "#134E18" }}>514</strong>
+              <span style={{ color: "#506352" }}>Kab/Kota</span>
             </div>
           </div>
         </div>
