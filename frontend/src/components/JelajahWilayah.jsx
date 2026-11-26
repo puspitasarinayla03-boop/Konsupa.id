@@ -36,6 +36,7 @@ import { getAllWilayah, getKomoditasWilayah } from "../api.js";
 import preloadedWilayah from "../data/data_wilayah.json";
 import preloadedKomoditas from "../data/data_komoditas.json";
 import { CLUSTER_CONFIG } from "../clusterConfig.js";
+import { generateBapanasRecommendations } from "../pphRecommendations.js";
 
 // -----------------------------------------------------------------------------
 // KONFIGURASI STANDAR POLA PANGAN HARAPAN (BAPANAS / WNPG)
@@ -53,7 +54,7 @@ const PPH_CONFIG = {
 };
 
 // -----------------------------------------------------------------------------
-// METADATA 26 KOMODITAS RIIL SUSENAS BPS
+// METADATA 26 KOMODITAS RIIL BAPANAS
 // -----------------------------------------------------------------------------
 const KOMODITAS_META = {
   beras: { label: "Beras", group: "padi-padian", category: "Padi & Umbi", color: "#166534", bg: "#DCFCE7" },
@@ -315,6 +316,10 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
     return { totalScore: roundedTotal, rating, breakdown };
   }, [activeWilayah]);
 
+  const bapanasRecs = useMemo(() => {
+    return generateBapanasRecommendations(activeWilayah);
+  }, [activeWilayah]);
+
   // ---------------------------------------------------------------------------
   // KOMODITAS RIIL DAERAH (DISORTIR & DIFILTER SECARA DINAMIS)
   // ---------------------------------------------------------------------------
@@ -474,7 +479,7 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
           </span>
         </div>
 
-        {/* Status SUSENAS & Tombol Cetak / Unduh Profil */}
+        {/* Status BAPANAS & Tombol Cetak / Unduh Profil */}
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <div
             style={{
@@ -491,7 +496,7 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
             }}
           >
             <span style={{ width: 6, height: 6, background: "#DC2626", borderRadius: 9999 }} />
-            Basis SUSENAS 2024–2025 (PPH 2100 kkal)
+            Basis BAPANAS 2024–2025 (PPH 2100 kkal)
           </div>
 
 
@@ -693,7 +698,7 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
                     {clusterMeta.sub}
                   </span>
                   <span style={{ fontSize: 9, fontWeight: 700, background: "#D1FAE5", color: "#064E3B", padding: "1px 5px", borderRadius: 4 }}>
-                    SUSENAS
+                    BAPANAS
                   </span>
                 </div>
               </div>
@@ -1191,6 +1196,112 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
                 Standar Pola Pangan Harapan (PPH) 2024
               </div>
             </div>
+          </div>
+
+          {/* Card 1B: Rekomendasi Kebijakan Bapanas & Pemerintah Daerah */}
+          <div
+            style={{
+              background: "#FFFFFF",
+              border: "1px solid rgba(6, 78, 59, 0.12)",
+              borderRadius: 12,
+              padding: "16px 20px",
+              boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.03)",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, flexWrap: "wrap", gap: 8 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Sparkles size={16} color="#006C48" />
+                <h3 style={{ fontSize: 14, fontWeight: 700, color: "#0F5238", margin: 0 }}>
+                  Rekomendasi Tindakan untuk Bapanas &amp; Pemerintah Daerah
+                </h3>
+              </div>
+              <span
+                style={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  background: bapanasRecs.deficits.length > 0 ? "#FEF2F2" : "#ECFDF5",
+                  color: bapanasRecs.deficits.length > 0 ? "#991B1B" : "#065F46",
+                  padding: "2px 8px",
+                  borderRadius: 9999,
+                }}
+              >
+                {bapanasRecs.deficits.length > 0
+                  ? `${bapanasRecs.deficits.length} Kelompok Perlu Intervensi`
+                  : "Konsumsi Relatif Seimbang"}
+              </span>
+            </div>
+
+            {bapanasRecs.allBalanced ? (
+              <div
+                style={{
+                  background: "#ECFDF5",
+                  border: "1px solid #A7F3D0",
+                  borderRadius: 8,
+                  padding: "10px 12px",
+                  fontSize: 11.5,
+                  color: "#065F46",
+                  lineHeight: "17px",
+                }}
+              >
+                Seluruh 8 kelompok pangan di wilayah ini berada dalam rentang ideal standar PPH. Pertahankan stabilitas pasokan, harga pangan pokok, dan edukasi pola makan B2SA.
+              </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {bapanasRecs.deficits.map((rec) => (
+                  <div
+                    key={`def-${rec.key}`}
+                    style={{
+                      background: "#FEF2F2",
+                      border: "1px solid #FECACA",
+                      borderRadius: 8,
+                      padding: "10px 12px",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: "#991B1B" }}>
+                        {rec.nama} Di Bawah Standar ({rec.konsumsi} g vs {rec.target} g)
+                      </span>
+                      <span style={{ fontSize: 10, fontWeight: 700, background: "#FEE2E2", color: "#991B1B", padding: "1px 7px", borderRadius: 9999 }}>
+                        Prioritas Pemenuhan
+                      </span>
+                    </div>
+                    <div style={{ fontSize: 11.5, fontWeight: 700, color: "#143224", marginBottom: 2 }}>
+                      {rec.title}
+                    </div>
+                    <div style={{ fontSize: 11, color: "#4B5563", lineHeight: "16px" }}>
+                      {rec.action}
+                    </div>
+                  </div>
+                ))}
+
+                {bapanasRecs.surpluses.slice(0, 2).map((rec) => (
+                  <div
+                    key={`sur-${rec.key}`}
+                    style={{
+                      background: "#FFFBEB",
+                      border: "1px solid #FDE68A",
+                      borderRadius: 8,
+                      padding: "10px 12px",
+                    }}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: "#92400E" }}>
+                        {rec.nama} Melebihi Standar ({rec.konsumsi} g vs {rec.target} g)
+                      </span>
+                      <span style={{ fontSize: 10, fontWeight: 700, background: "#FEF3C7", color: "#92400E", padding: "1px 7px", borderRadius: 9999 }}>
+                        Penyeimbangan Pola
+                      </span>
+                    </div>
+                    <div style={{ fontSize: 11.5, fontWeight: 700, color: "#143224", marginBottom: 2 }}>
+                      {rec.title}
+                    </div>
+                    <div style={{ fontSize: 11, color: "#4B5563", lineHeight: "16px" }}>
+                      {rec.action}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Card 2: FR-05 Komoditas Utama Penyusun (Dinamis Real Data 26 Komoditas) */}

@@ -140,7 +140,7 @@ export default function Beranda({ onNavigate }) {
               margin: 0,
             }}
           >
-            Pemetaan klaster pola makan 514 Kabupaten/Kota berbasis 8 kelompok pangan Susenas 2024–2025 dengan standar Pola Pangan Harapan (PPH).
+            Pemetaan klaster pola makan 514 Kabupaten/Kota berbasis 8 kelompok pangan Bapanas 2024–2025 dengan standar Pola Pangan Harapan (PPH).
           </p>
         </div>
 
@@ -673,7 +673,7 @@ export default function Beranda({ onNavigate }) {
           </div>
           <span>● Data agregat makro non-klinis</span>
           <span>● Tidak mengukur alokasi bansos spesifik</span>
-          <span>● Sumber resmi BPS Susenas 2024–2025</span>
+          <span>● Sumber resmi Bapanas 2024–2025</span>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>

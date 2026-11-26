@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { predictCluster } from "../api.js";
 import { CLUSTER_CONFIG } from "../clusterConfig.js";
+import { generateBapanasRecommendations } from "../pphRecommendations.js";
 
 const FITUR_DEFAULT = [
   { id: "padi-padian", num: 1, name: "Padi-padian", med: 284, minReal: 41, maxReal: 450, defVal: "290", maxVal: 2000 },
@@ -73,7 +74,7 @@ export default function CekTipePola({ onNavigate }) {
   const [serverError, setServerError] = useState(null);
   const [serverResult, setServerResult] = useState(null);
 
-  // Validasi input 8 kelompok pangan (hard error + soft warning rentang Susenas 2025)
+  // Validasi input 8 kelompok pangan (hard error + soft warning rentang Bapanas 2025)
   const validation = useMemo(() => {
     const fieldErrors = {};
     const fieldWarnings = {};
@@ -213,6 +214,15 @@ export default function CekTipePola({ onNavigate }) {
       .slice(0, 3);
   }, [inputs]);
 
+  const bapanasRecs = useMemo(() => {
+    const valuesMap = {};
+    FITUR_DEFAULT.forEach((f) => {
+      const raw = inputs[f.id];
+      valuesMap[f.id] = raw !== "" && !isNaN(Number(raw)) ? Number(raw) : f.med;
+    });
+    return generateBapanasRecommendations(valuesMap);
+  }, [inputs]);
+
   return (
     <div style={{ padding: "24px 24px 40px", display: "flex", flexDirection: "column", gap: 16 }}>
       {/* =========================================================================
@@ -243,7 +253,7 @@ export default function CekTipePola({ onNavigate }) {
               Hasil Identifikasi Tipe Pola Konsumsi
             </h1>
             <p style={{ fontSize: 11, color: "#546E60", margin: "2px 0 0 0" }}>
-              Pemetaan profil konsumsi 8 kelompok pangan terhadap standar nasional Bapanas &amp; Susenas 2025.
+              Pemetaan profil konsumsi 8 kelompok pangan terhadap standar nasional Bapanas 2025.
             </p>
           </div>
         </div>
@@ -549,6 +559,76 @@ export default function CekTipePola({ onNavigate }) {
             </div>
           </div>
 
+          {/* Rekomendasi Kebijakan Bapanas berdasarkan Standar PPH */}
+          <div
+            style={{
+              background: "#FFFFFF",
+              border: "1px solid rgba(6, 78, 59, 0.1)",
+              borderRadius: 14,
+              padding: "16px 18px",
+              boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.03)",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+              <div style={{ fontSize: 12, fontWeight: 800, color: "#143224", display: "flex", alignItems: "center", gap: 6 }}>
+                <Sparkles size={14} color="#16A34A" />
+                Rekomendasi Kebijakan Bapanas (Standar PPH)
+              </div>
+            </div>
+
+            {bapanasRecs.allBalanced ? (
+              <div style={{ background: "#ECFDF5", border: "1px solid #A7F3D0", borderRadius: 8, padding: "9px 11px", fontSize: 11, color: "#065F46" }}>
+                Konsumsi seluruh 8 kelompok pangan sudah seimbang dengan standar PPH. Pertahankan stabilitas pasokan dan edukasi B2SA.
+              </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                {bapanasRecs.deficits.slice(0, 3).map((rec) => (
+                  <div
+                    key={`sim-def-${rec.key}`}
+                    style={{
+                      background: "#FEF2F2",
+                      border: "1px solid #FECACA",
+                      borderRadius: 8,
+                      padding: "8px 10px",
+                    }}
+                  >
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "#991B1B" }}>
+                      {rec.nama} Di Bawah Standar ({rec.konsumsi} g vs {rec.target} g)
+                    </div>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "#143224", marginTop: 2 }}>
+                      {rec.title}
+                    </div>
+                    <div style={{ fontSize: 10.5, color: "#4B5563", marginTop: 2, lineHeight: "15px" }}>
+                      {rec.action}
+                    </div>
+                  </div>
+                ))}
+                {bapanasRecs.deficits.length === 0 &&
+                  bapanasRecs.surpluses.slice(0, 2).map((rec) => (
+                    <div
+                      key={`sim-sur-${rec.key}`}
+                      style={{
+                        background: "#FFFBEB",
+                        border: "1px solid #FDE68A",
+                        borderRadius: 8,
+                        padding: "8px 10px",
+                      }}
+                    >
+                      <div style={{ fontSize: 11, fontWeight: 700, color: "#92400E" }}>
+                        {rec.nama} Melebihi Standar ({rec.konsumsi} g vs {rec.target} g)
+                      </div>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: "#143224", marginTop: 2 }}>
+                        {rec.title}
+                      </div>
+                      <div style={{ fontSize: 10.5, color: "#4B5563", marginTop: 2, lineHeight: "15px" }}>
+                        {rec.action}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </div>
+
           {/* Cakupan Wilayah */}
           <div
             style={{
@@ -597,13 +677,13 @@ export default function CekTipePola({ onNavigate }) {
             >
               <AlertTriangle size={15} color="#D97706" style={{ flexShrink: 0, marginTop: 1 }} />
               <div>
-                <strong>Catatan Simulasi Ekstrem:</strong> Sebagian angka input berada di luar rentang umum kabupaten/kota Indonesia (Susenas 2025), sehingga hasil penetapan pola merupakan ekstrapolasi dan dapat kurang representatif.
+                <strong>Catatan Simulasi Ekstrem:</strong> Sebagian angka input berada di luar rentang umum kabupaten/kota Indonesia (Bapanas 2025), sehingga hasil penetapan pola merupakan ekstrapolasi dan dapat kurang representatif.
               </div>
             </div>
           )}
 
           <div style={{ fontSize: 10.5, color: "#6A8374", fontStyle: "italic", lineHeight: "15px" }}>
-            ⓘ Hasil simulasi mengacu pada profil konsumsi pangan rumah tangga nasional (Susenas/Bapanas 2025) sebagai alat bantu pemetaan wilayah, bukan rujukan medis individu.
+            ⓘ Hasil simulasi mengacu pada profil konsumsi pangan rumah tangga nasional (Bapanas 2025) sebagai alat bantu pemetaan wilayah, bukan rujukan medis individu.
           </div>
         </div>
       </div>
@@ -882,7 +962,7 @@ export default function CekTipePola({ onNavigate }) {
             >
               <div style={{ fontSize: 11, color: "#546E60", display: "flex", alignItems: "center", gap: 5 }}>
                 <Info size={13} color="#16A34A" />
-                <span>Data acuan: Susenas &amp; Bapanas 2025</span>
+                <span>Data acuan: Bapanas 2025</span>
               </div>
 
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>

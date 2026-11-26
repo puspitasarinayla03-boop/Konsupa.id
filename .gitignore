@@ -108,13 +108,8 @@ frontend/.vite/
 # -----------------------------------------------------------------------------
 # 5. Model & Artefak Data
 # -----------------------------------------------------------------------------
-# File model dan CSV hasil clustering
-# Catatan: Jika ingin men-track model & dataset final di repo (ukuran total ~300KB),
-# Anda dapat menghapus komentar tanda '!' di bawah ini:
-backend/artifacts/*.pkl
-backend/artifacts/*.csv
+# Artefak model (.pkl) dan dataset (.csv) di-track agar aplikasi siap dijalankan langsung.
 !backend/artifacts/.gitkeep
-!backend/artifacts/model_metadata.json
 
 # Dataset mentah & cache lokal
 dataset awal/

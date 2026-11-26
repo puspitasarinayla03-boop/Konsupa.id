@@ -1,6 +1,6 @@
 # konsupa.id — Sistem Informasi Pola Konsumsi Pangan Indonesia
 
-Aplikasi web untuk menganalisis, memetakan, dan menjelajahi pola konsumsi pangan di **514 Kabupaten/Kota Indonesia** berbasis **8 kelompok pangan utama (standar Pola Pangan Harapan / PPH Bapanas)** serta rincian **26 jenis komoditas** Susenas BPS (data aktif Tahun 2025).
+Aplikasi web untuk menganalisis, memetakan, dan menjelajahi pola konsumsi pangan di **514 Kabupaten/Kota Indonesia** berbasis **8 kelompok pangan utama (standar Pola Pangan Harapan / PPH Bapanas)** serta rincian **26 jenis komoditas** Bapanas (data aktif Tahun 2025).
 
 ---
 

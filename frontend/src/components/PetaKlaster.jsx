@@ -196,7 +196,7 @@ export default function PetaKlaster({ onSelectRegion, onNavigate }) {
             </span>
           </div>
           <p style={{ fontSize: 11, color: "#546E60", margin: "4px 0 0 0" }}>
-            Pemetaan 514 kabupaten/kota berdasarkan kemiripan 8 kelompok konsumsi pangan Susenas 2025.
+            Pemetaan 514 kabupaten/kota berdasarkan kemiripan 8 kelompok konsumsi pangan Bapanas 2025.
           </p>
         </div>
 
