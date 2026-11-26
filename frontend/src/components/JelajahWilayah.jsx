@@ -496,7 +496,7 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
             }}
           >
             <span style={{ width: 6, height: 6, background: "#DC2626", borderRadius: 9999 }} />
-            Basis BAPANAS 2024–2025 (PPH 2100 kkal)
+            Basis BAPANAS 2025 (PPH 2100 kkal)
           </div>
 
 
@@ -1193,7 +1193,7 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
                 </span>
               </div>
               <div style={{ fontStyle: "italic", color: "#3B614E" }}>
-                Standar Pola Pangan Harapan (PPH) 2024
+                Standar Pola Pangan Harapan (PPH) 2025
               </div>
             </div>
           </div>
