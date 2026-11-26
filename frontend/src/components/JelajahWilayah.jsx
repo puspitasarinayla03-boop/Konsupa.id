@@ -669,102 +669,83 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
             </div>
           </div>
 
-          {/* Card 2: Active Territory Profile Card */}
+          {/* Card 2: Active Territory Profile Card (Bold Bapanas Deep Green) */}
           <div
             style={{
-              background: "linear-gradient(135deg, rgba(236, 253, 245, 0.7) 0%, #FFFFFF 50%, rgba(240, 253, 250, 0.3) 100%)",
-              border: "1px solid rgba(6, 78, 59, 0.15)",
-              borderRadius: 12,
-              padding: "16px 18px",
-              boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.04)",
+              background: "linear-gradient(135deg, #166520 0%, #134E18 100%)",
+              border: "none",
+              borderRadius: 16,
+              padding: "18px 20px",
+              boxShadow: "0 10px 24px rgba(19, 78, 24, 0.18)",
+              color: "#FFFFFF",
               display: "flex",
               flexDirection: "column",
               gap: 12,
             }}
           >
             {/* Header: Title + Badge */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", borderBottom: "1px solid rgba(6, 78, 59, 0.08)", paddingBottom: 10 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
               <div>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 6, flexWrap: "wrap" }}>
-                  <h1 style={{ fontSize: 19, fontWeight: 800, color: "#191C1C", margin: 0 }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap" }}>
+                  <h1 style={{ fontSize: 19, fontWeight: 800, color: "#FFFFFF", margin: 0 }}>
                     {activeWilayah.Kabupaten_Kota || "Kabupaten"}
                   </h1>
-                  <span style={{ fontSize: 12, color: "#546E60" }}>
+                  <span style={{ fontSize: 12, color: "#D1FAE5", fontWeight: 500 }}>
                     {activeWilayah.Provinsi}
                   </span>
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 4 }}>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: "#065F46" }}>
-                    {clusterMeta.sub}
-                  </span>
-                  <span style={{ fontSize: 9, fontWeight: 700, background: "#D1FAE5", color: "#064E3B", padding: "1px 5px", borderRadius: 4 }}>
-                    BAPANAS
-                  </span>
+                <div style={{ fontSize: 12, fontWeight: 600, color: "#EAF5EC", marginTop: 4 }}>
+                  {clusterMeta.name}: {clusterMeta.sub}
                 </div>
               </div>
 
-              {/* Cluster badge */}
-              <span
-                style={{
-                  background: clusterMeta.bg,
-                  border: `1px solid ${clusterMeta.color}44`,
-                  borderRadius: 9999,
-                  padding: "3px 10px",
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: clusterMeta.textColor,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 5,
-                }}
-              >
-                <span style={{ width: 6, height: 6, background: clusterMeta.color, borderRadius: 9999 }} />
-                Tipe {clusterId}
-              </span>
-            </div>
-
-            {/* 3 Stat Tiles */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
-              {/* Tile 1 */}
-              <div style={{ background: "rgba(255, 255, 255, 0.85)", border: "1px solid rgba(6, 78, 59, 0.1)", borderRadius: 8, padding: "8px 10px" }}>
-                <div style={{ fontSize: 10, color: "#546E60", fontWeight: 500 }}>Kelompok Pola</div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: "#065F46", marginTop: 2 }}>
+              {/* Cluster + Pola Status Badges */}
+              <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+                <span
+                  style={{
+                    background: "#E5B324",
+                    borderRadius: 9999,
+                    padding: "4px 12px",
+                    fontSize: 11,
+                    fontWeight: 800,
+                    color: "#134E18",
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   Tipe {clusterId}
-                </div>
-              </div>
-
-              {/* Tile 2 */}
-              <div style={{ background: "rgba(255, 255, 255, 0.85)", border: "1px solid rgba(6, 78, 59, 0.1)", borderRadius: 8, padding: "8px 10px" }}>
-                <div style={{ fontSize: 10, color: "#546E60", fontWeight: 500 }}>Kesesuaian Pola</div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: isTransition ? "#B45309" : "#0F5238", marginTop: 2 }}>
-                  {keyakinanLabel}
-                </div>
-              </div>
-
-              {/* Tile 3 */}
-              <div style={{ background: "rgba(255, 255, 255, 0.85)", border: "1px solid rgba(6, 78, 59, 0.1)", borderRadius: 8, padding: "8px 10px" }}>
-                <div style={{ fontSize: 10, color: "#546E60", fontWeight: 500 }}>Karakteristik</div>
-                <div style={{ fontSize: 13, fontWeight: 700, color: isTransition ? "#B45309" : "#191C1C", marginTop: 2 }}>
-                  {isTransition ? "Pola Campuran" : "Pola Tunggal"}
-                </div>
+                </span>
+                {isTransition && (
+                  <span
+                    style={{
+                      background: "rgba(255, 255, 255, 0.16)",
+                      borderRadius: 9999,
+                      padding: "4px 10px",
+                      fontSize: 10.5,
+                      fontWeight: 700,
+                      color: "#FDE68A",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    Pola Campuran
+                  </span>
+                )}
               </div>
             </div>
 
             {/* Komposisi Kecenderungan 4 Tipe Pola Pangan */}
             <div
               style={{
-                marginTop: 10,
-                background: "rgba(255, 255, 255, 0.88)",
-                border: "1px solid rgba(6, 78, 59, 0.1)",
-                borderRadius: 10,
-                padding: "10px 12px",
+                background: "#FFFFFF",
+                border: "none",
+                borderRadius: 12,
+                padding: "11px 14px",
               }}
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                <span style={{ fontSize: 10.5, fontWeight: 700, color: "#143224" }}>
-                  Komposisi Kecenderungan Pola Pangan Wilayah
+                <span style={{ fontSize: 11, fontWeight: 800, color: "#134E18" }}>
+                  Komposisi Kecenderungan Pola Pangan
                 </span>
-                <span style={{ fontSize: 10, color: "#546E60" }}>Total 100%</span>
+                <span style={{ fontSize: 10, color: "#546E60", fontWeight: 600 }}>Total 100%</span>
               </div>
               <div style={{ display: "flex", height: 8, borderRadius: 9999, overflow: "hidden", background: "#E5E7EB", gap: 1 }}>
                 {regionComposition
@@ -1202,48 +1183,49 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
           <div
             style={{
               background: "#FFFFFF",
-              border: "1px solid rgba(6, 78, 59, 0.12)",
-              borderRadius: 12,
+              border: "none",
+              borderRadius: 14,
               padding: "16px 20px",
-              boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.03)",
+              boxShadow: "0 2px 10px rgba(19, 78, 24, 0.06)",
             }}
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, flexWrap: "wrap", gap: 8 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <Sparkles size={16} color="#006C48" />
-                <h3 style={{ fontSize: 14, fontWeight: 700, color: "#0F5238", margin: 0 }}>
-                  Rekomendasi Tindakan untuk Bapanas &amp; Pemerintah Daerah
+                <Sparkles size={16} color="#134E18" />
+                <h3 style={{ fontSize: 14, fontWeight: 700, color: "#134E18", margin: 0 }}>
+                  Rekomendasi Tindakan Bapanas &amp; Pemda
                 </h3>
               </div>
               <span
                 style={{
                   fontSize: 10,
-                  fontWeight: 700,
-                  background: bapanasRecs.deficits.length > 0 ? "#FEF2F2" : "#ECFDF5",
-                  color: bapanasRecs.deficits.length > 0 ? "#991B1B" : "#065F46",
-                  padding: "2px 8px",
+                  fontWeight: 800,
+                  background: bapanasRecs.deficits.length > 0 ? "#DC2626" : "#134E18",
+                  color: "#FFFFFF",
+                  padding: "3px 10px",
                   borderRadius: 9999,
                 }}
               >
                 {bapanasRecs.deficits.length > 0
-                  ? `${bapanasRecs.deficits.length} Kelompok Perlu Intervensi`
-                  : "Konsumsi Relatif Seimbang"}
+                  ? `${bapanasRecs.deficits.length} Perlu Diperhatikan`
+                  : "Aman / Seimbang"}
               </span>
             </div>
 
             {bapanasRecs.allBalanced ? (
               <div
                 style={{
-                  background: "#ECFDF5",
-                  border: "1px solid #A7F3D0",
+                  background: "#F4F8F5",
+                  borderLeft: "5px solid #134E18",
                   borderRadius: 8,
-                  padding: "10px 12px",
+                  padding: "10px 14px",
                   fontSize: 11.5,
-                  color: "#065F46",
+                  color: "#134E18",
+                  fontWeight: 600,
                   lineHeight: "17px",
                 }}
               >
-                Seluruh 8 kelompok pangan di wilayah ini berada dalam rentang ideal standar PPH. Pertahankan stabilitas pasokan, harga pangan pokok, dan edukasi pola makan B2SA.
+                Seluruh 8 kelompok pangan di wilayah ini sudah aman dan sesuai standar PPH.
               </div>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -1251,24 +1233,24 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
                   <div
                     key={`def-${rec.key}`}
                     style={{
-                      background: "#FEF2F2",
-                      border: "1px solid #FECACA",
+                      background: "#F9FAFB",
+                      borderLeft: "5px solid #DC2626",
                       borderRadius: 8,
-                      padding: "10px 12px",
+                      padding: "10px 14px",
                     }}
                   >
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: "#991B1B" }}>
-                        {rec.nama} Di Bawah Standar ({rec.konsumsi} g vs {rec.target} g)
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 3 }}>
+                      <span style={{ fontSize: 12, fontWeight: 800, color: "#991B1B" }}>
+                        {rec.nama} ({rec.konsumsi} g vs {rec.target} g)
                       </span>
-                      <span style={{ fontSize: 10, fontWeight: 700, background: "#FEE2E2", color: "#991B1B", padding: "1px 7px", borderRadius: 9999 }}>
-                        Prioritas Pemenuhan
+                      <span style={{ fontSize: 10, fontWeight: 800, background: "#DC2626", color: "#FFFFFF", padding: "2px 9px", borderRadius: 9999 }}>
+                        Perlu Diperhatikan
                       </span>
                     </div>
                     <div style={{ fontSize: 11.5, fontWeight: 700, color: "#143224", marginBottom: 2 }}>
                       {rec.title}
                     </div>
-                    <div style={{ fontSize: 11, color: "#4B5563", lineHeight: "16px" }}>
+                    <div style={{ fontSize: 11, color: "#374151", lineHeight: "16px" }}>
                       {rec.action}
                     </div>
                   </div>
@@ -1278,24 +1260,24 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
                   <div
                     key={`sur-${rec.key}`}
                     style={{
-                      background: "#FFFBEB",
-                      border: "1px solid #FDE68A",
+                      background: "#F9FAFB",
+                      borderLeft: "5px solid #2563EB",
                       borderRadius: 8,
-                      padding: "10px 12px",
+                      padding: "10px 14px",
                     }}
                   >
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: "#92400E" }}>
-                        {rec.nama} Melebihi Standar ({rec.konsumsi} g vs {rec.target} g)
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 3 }}>
+                      <span style={{ fontSize: 12, fontWeight: 800, color: "#1E40AF" }}>
+                        {rec.nama} ({rec.konsumsi} g vs {rec.target} g)
                       </span>
-                      <span style={{ fontSize: 10, fontWeight: 700, background: "#FEF3C7", color: "#92400E", padding: "1px 7px", borderRadius: 9999 }}>
-                        Penyeimbangan Pola
+                      <span style={{ fontSize: 10, fontWeight: 800, background: "#2563EB", color: "#FFFFFF", padding: "2px 9px", borderRadius: 9999 }}>
+                        Melebihi Standar
                       </span>
                     </div>
                     <div style={{ fontSize: 11.5, fontWeight: 700, color: "#143224", marginBottom: 2 }}>
                       {rec.title}
                     </div>
-                    <div style={{ fontSize: 11, color: "#4B5563", lineHeight: "16px" }}>
+                    <div style={{ fontSize: 11, color: "#374151", lineHeight: "16px" }}>
                       {rec.action}
                     </div>
                   </div>
@@ -1304,14 +1286,14 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
             )}
           </div>
 
-          {/* Card 2: FR-05 Komoditas Utama Penyusun (Dinamis Real Data 26 Komoditas) */}
+          {/* Card 2: Komoditas Utama Penyusun (Warna Status Bapanas: Merah/Kuning/Hijau) */}
           <div
             style={{
               background: "#FFFFFF",
-              border: "1px solid rgba(6, 78, 59, 0.1)",
-              borderRadius: 12,
+              border: "none",
+              borderRadius: 14,
               padding: "16px 20px",
-              boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.03)",
+              boxShadow: "0 2px 10px rgba(19, 78, 24, 0.06)",
             }}
           >
             {/* Header dengan Kontrol Interaktif */}
@@ -1371,49 +1353,76 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
               ))}
             </div>
 
-            {/* Komoditas Grid Riil Dinamis */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(190px, 1fr))", gap: 8 }}>
+            {/* Keterangan Warna Status */}
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px 14px", marginBottom: 10, fontSize: 10.5, color: "#4B5563" }}>
+              <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                <span style={{ width: 8, height: 8, borderRadius: 9999, background: "#134E18" }} />
+                Memenuhi Standar
+              </span>
+              <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                <span style={{ width: 8, height: 8, borderRadius: 9999, background: "#2563EB" }} />
+                Melebihi Standar (Overachieve)
+              </span>
+              <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                <span style={{ width: 8, height: 8, borderRadius: 9999, background: "#DC2626" }} />
+                Di Bawah Standar
+              </span>
+              <span style={{ color: "#6B7280", fontStyle: "italic" }}>
+                (status mengacu pada kelompok pangan induknya)
+              </span>
+            </div>
+
+            {/* Komoditas Grid Riil Dinamis (Tegas: Merah / Biru / Hijau Bapanas, tanpa border tipis) */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(195px, 1fr))", gap: 10 }}>
               {visibleCommodities.length > 0 ? (
-                visibleCommodities.map((item) => (
-                  <div
-                    key={item.id}
-                    style={{
-                      background: item.bg,
-                      border: "1px solid rgba(6, 78, 59, 0.1)",
-                      borderRadius: 8,
-                      padding: "8px 10px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      transition: "transform 0.1s",
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0 }}>
-                      <span style={{ width: 8, height: 8, borderRadius: 9999, background: item.color, flexShrink: 0 }} />
-                      <div style={{ minWidth: 0 }}>
-                        <div style={{ fontSize: 11, fontWeight: 700, color: "#191C1C", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                          {item.label}
-                        </div>
-                        <div style={{ fontSize: 9, color: "#64748B" }}>{item.category}</div>
-                      </div>
-                    </div>
-                    <span
+                visibleCommodities.map((item) => {
+                  const groupInfo = pphAnalysis.breakdown.find((b) => b.key === item.group);
+                  const status = groupInfo?.status || "Memenuhi";
+                  const theme =
+                    status === "Di Bawah Standar"
+                      ? { bg: "#F9FAFB", bar: "#DC2626", pillBg: "#DC2626", pillText: "#FFFFFF" }
+                      : status === "Di Atas Standar"
+                        ? { bg: "#F9FAFB", bar: "#2563EB", pillBg: "#2563EB", pillText: "#FFFFFF" }
+                        : { bg: "#F4F8F5", bar: "#134E18", pillBg: "#134E18", pillText: "#FFFFFF" };
+
+                  return (
+                    <div
+                      key={item.id}
                       style={{
-                        fontSize: 11,
-                        fontWeight: 800,
-                        color: item.color,
-                        background: "#FFFFFF",
-                        border: "1px solid rgba(6, 78, 59, 0.12)",
-                        borderRadius: 6,
-                        padding: "2px 6px",
-                        whiteSpace: "nowrap",
-                        marginLeft: 6,
+                        background: theme.bg,
+                        border: "none",
+                        borderLeft: `4px solid ${theme.bar}`,
+                        borderRadius: 8,
+                        padding: "9px 11px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
                       }}
                     >
-                      {item.gram} g
-                    </span>
-                  </div>
-                ))
+                      <div style={{ minWidth: 0 }}>
+                        <div style={{ fontSize: 11.5, fontWeight: 700, color: "#143224", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                          {item.label}
+                        </div>
+                        <div style={{ fontSize: 9.5, color: "#546E60" }}>{item.category}</div>
+                      </div>
+                      <span
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 800,
+                          color: theme.pillText,
+                          background: theme.pillBg,
+                          border: "none",
+                          borderRadius: 6,
+                          padding: "3px 8px",
+                          whiteSpace: "nowrap",
+                          marginLeft: 6,
+                        }}
+                      >
+                        {item.gram} g
+                      </span>
+                    </div>
+                  );
+                })
               ) : (
                 <div style={{ gridColumn: "1 / -1", padding: "16px", textAlign: "center", fontSize: 11, color: "#64748B" }}>
                   Tidak ada komoditas pada kategori yang dipilih.
@@ -1452,7 +1461,7 @@ export default function JelajahWilayah({ initialRegion = "Kabupaten Banyumas", o
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
               <div>
                 <h3 style={{ fontSize: 16, fontWeight: 800, color: "#143224", margin: 0 }}>
-                  Rincian Skor PPH — {activeWilayah.Kabupaten_Kota}
+                  Rincian Skor PPH: {activeWilayah.Kabupaten_Kota}
                 </h3>
                 <span style={{ fontSize: 11, color: "#546E60" }}>
                   Total Skor PPH Aktual: <strong>{pphAnalysis.totalScore} / 100</strong> ({pphAnalysis.rating})

@@ -77,8 +77,8 @@ export default function App() {
               setPage("peta");
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
-            style={{ cursor: "pointer" }}
-            title="konsupa.id — Sebaran & Jelajah Wilayah"
+            style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 10 }}
+            title="konsupa.id: Sebaran & Jelajah Wilayah"
           >
             <img 
               src="/logo.png" 
@@ -86,6 +86,12 @@ export default function App() {
               style={{ height: 32, width: "auto", objectFit: "contain", display: "block" }} 
             />
             <span className="header-brand-title">konsupa.id</span>
+            <span style={{ width: 1, height: 22, background: "rgba(19, 78, 24, 0.18)", margin: "0 2px" }} />
+            <img 
+              src="/logo_bapanas.png" 
+              alt="Logo Badan Pangan Nasional" 
+              style={{ height: 26, width: "auto", objectFit: "contain", display: "block" }} 
+            />
           </div>
 
           {/* Expandable Navigation Pills */}

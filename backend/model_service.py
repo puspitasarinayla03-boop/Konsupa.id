@@ -255,10 +255,10 @@ def predict_cluster(input_values: dict) -> dict:
     if invalid_errors:
         raise ValueError(" | ".join(invalid_errors))
 
-    # 2. Syarat minimal 4 fitur terisi
-    if len(parsed_values) < 4:
+    # 2. Syarat seluruh 8 fitur wajib terisi (nilai 0 diperbolehkan)
+    if len(parsed_values) < len(features):
         raise ValueError(
-            f"Minimal 4 kelompok pangan harus diisi untuk menghasilkan klasifikasi yang valid "
+            f"Seluruh {len(features)} kelompok pangan wajib diisi "
             f"(saat ini hanya terisi {len(parsed_values)} kelompok pangan)."
         )
 
